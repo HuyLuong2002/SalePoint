@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "847485963865",
+    "project_id": "salepoint-fe439",
+    "storage_bucket": "salepoint-fe439.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847485963865:android:d677e8b91e7a7bf22d6b48",
+        "android_client_info": {
+          "package_name": "com.example.salepoint"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8WrCGnZJOXnC19TkddU8jKLHdusTXbbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
