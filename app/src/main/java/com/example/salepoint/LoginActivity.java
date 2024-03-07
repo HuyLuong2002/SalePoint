@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.salepoint.util.Utils;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String phoneNumber = edtPhoneNumber.getText().toString();
                 // Kiểm tra kết nối Internet khi Activity được tạo
-                if (checkInternetConnection()) {
+                if (Utils.checkInternetConnection(getApplicationContext())) {
                     sendVerificationCode(phoneNumber);
                 } else {
                     //Xuất ra màn hình
@@ -85,19 +86,4 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-    private boolean checkInternetConnection() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager != null) {
-            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-            if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
-                // Có kết nối Internet
-                return true;
-            } else {
-                // Không có kết nối Internet
-                return false;
-            }
-        }
-        return false;
-    }
 }

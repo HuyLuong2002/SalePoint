@@ -72,6 +72,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("com.google.firebase:firebase-database:20.3.1")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -87,4 +88,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
+    // ZXing core library
+    implementation("com.google.zxing:core:3.4.1")
+    // ZXing Android Embedded (dành cho việc quét)
+    implementation("com.journeyapps:zxing-android-embedded:4.1.0")
+    implementation("com.google.code.gson:gson:2.8.8")
 }
