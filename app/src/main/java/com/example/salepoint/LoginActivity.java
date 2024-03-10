@@ -54,33 +54,35 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void sendVerificationCode(String phoneNumber) {
-        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber("+84 " + phoneNumber)
-                .setTimeout(60L, TimeUnit.SECONDS)
-                .setActivity(this)
-                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                    @Override
-                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                        // Xuất ra Toast thông báo
-                        Toast.makeText(LoginActivity.this, "Xác thực thành công!", Toast.LENGTH_SHORT).show();
-                    }
+        PhoneAuthOptions.Builder builder = PhoneAuthOptions.newBuilder(mAuth);
+        builder.setPhoneNumber("+84 " + phoneNumber);
+        builder.setTimeout(60L, TimeUnit.SECONDS);
+        builder.setActivity(this);
+        builder.setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                // Xuất ra Toast thông báo
+                Toast.makeText(LoginActivity.this, "Xác thực thành công!", Toast.LENGTH_SHORT).show();
+            }
 
-                    @Override
-                    public void onVerificationFailed(@NonNull FirebaseException e) {
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
 // Xử lý khi có lỗi xảy ra trong quá trình xác thực
-                        System.out.println(e.getMessage());
-                        Toast.makeText(LoginActivity.this, "Xác thực thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                System.out.println(e.getMessage());
+                Toast.makeText(LoginActivity.this, "Xác thực thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
 
-                    @Override
-                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                        // Mã đã được gửi, chuyển người dùng đến màn hình nhập mã và xác thực
-                        Intent intent = new Intent(LoginActivity.this, VerifyActivity.class);
-                        intent.putExtra("verificationId", s);
-                        intent.putExtra("mobile", edtPhoneNumber.getText().toString());
-                        startActivity(intent);
-                    }
-                })
+            @Override
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                // Mã đã được gửi, chuyển người dùng đến màn hình nhập mã và xác thực
+
+                Intent intent = new Intent(LoginActivity.this, VerifyActivity.class);
+                intent.putExtra("verificationId", s);
+                intent.putExtra("mobile", edtPhoneNumber.getText().toString());
+                startActivity(intent);
+            }
+        });
+        PhoneAuthOptions options = builder
                 .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
 
