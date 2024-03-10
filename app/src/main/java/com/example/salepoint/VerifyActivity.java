@@ -12,12 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.salepoint.model.User;
+import com.example.salepoint.server.AdminActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +47,7 @@ public class VerifyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String verificationId = intent.getStringExtra("verificationId");
         String phoneNumber = intent.getStringExtra("mobile");
-        PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, "456789");
+        PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, "123456");
         FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -62,6 +62,18 @@ public class VerifyActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 // Người dùng đã tồn tại, xử lý theo cách bạn muốn, ví dụ thông báo cho người dùng
+                                // Kiểm tra xem người dùng có là admin không
+                                boolean isStaff = dataSnapshot.child("isStaff").getValue(Boolean.class);
+                                Intent intentAdmin = null;
+                                if (isStaff) {
+                                    // Người dùng là admin, chuyển qua màn hình admin
+                                    intentAdmin = new Intent(VerifyActivity.this, AdminActivity.class);
+
+                                    startActivity(intentAdmin);
+                                } else {
+                                    // Người dùng không phải là admin, có thể làm gì đó khác ở đây
+
+                                }
                             } else {
                                 // Người dùng không tồn tại, thêm vào cơ sở dữ liệu
                                 User newUser = new User(phoneNumber, "");
@@ -107,7 +119,6 @@ public class VerifyActivity extends AppCompatActivity {
                                                 });
                                             } else {
                                                 //Update không thành công
-                                                System.out.println("khong tc");
                                             }
                                         }
                                     });
@@ -124,9 +135,9 @@ public class VerifyActivity extends AppCompatActivity {
                         }
                     });
 
-                    Toast.makeText(VerifyActivity.this, "Xác thực thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(VerifyActivity.this, "Xác thực thất bại!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VerifyActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

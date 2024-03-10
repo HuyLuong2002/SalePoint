@@ -1,7 +1,10 @@
 <resources>
-    <string name="app_name">SalePoint</string>
+    <string name="app_name">Sale Point App</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="search_hint">Tìm kiếm</string>
+    <string name="manage_user">Quản lý người dùng</string>
+    <string name="tick_point_function">Quản lý tích điểm</string>
 </resources>

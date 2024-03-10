@@ -3,7 +3,8 @@ package com.example.salepoint.model;
 public class User {
     private String Name;
     private String Password;
-    private String IsStaff;
+
+    private boolean IsStaff;
 
     public User() {
     }
@@ -11,14 +12,14 @@ public class User {
     public User(String name, String password) {
         Name = name;
         Password = password;
-        IsStaff = "false";
+        IsStaff = false;
     }
 
-    public String getIsStaff() {
+    public boolean getIsStaff() {
         return IsStaff;
     }
 
-    public void setIsStaff(String isStaff) {
+    public void setIsStaff(boolean isStaff) {
         IsStaff = isStaff;
     }
 
