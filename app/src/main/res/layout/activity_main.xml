@@ -13,13 +13,13 @@
         android:layout_marginTop="-5dp"
         android:src="@drawable/qrcode"
         android:visibility="visible"
-        app:backgroundTint="@color/purple_500"
+        app:backgroundTint="@color/yellowPrimaryDark"
         app:elevation="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/nav_view"
         app:layout_constraintTop_toTopOf="@+id/nav_view"
-        app:tint="@color/white"
+        app:tint="@color/black"
         tools:visibility="visible" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
