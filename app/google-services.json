@@ -13,7 +13,44 @@
           "package_name": "com.example.salepoint"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "847485963865-3qtmfug899n4nnljcosrvo0t3e3osip2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.salepoint",
+            "certificate_hash": "b28d97b062f8b1eceeced188a45838aeb3391875"
+          }
+        },
+        {
+          "client_id": "847485963865-9qvipkb4o3kjfih5p3j50sstrt8eun18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.salepoint",
+            "certificate_hash": "7888d86e3aaf3b98cdcb66876c56e270854bafbd"
+          }
+        },
+        {
+          "client_id": "847485963865-pu3bil94ru0vf66i6mc027ts8je7jrom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.salepoint",
+            "certificate_hash": "59a4a01d5527d21e36e74daa071c1a6619aba594"
+          }
+        },
+        {
+          "client_id": "847485963865-q4ngn007hditglb4qs416buv9sepbrga.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.salepoint",
+            "certificate_hash": "577861582d7b7409b32862cd90897362a3307133"
+          }
+        },
+        {
+          "client_id": "847485963865-n691h9td28r1ej4gulu7aj33utjr7mgf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC8WrCGnZJOXnC19TkddU8jKLHdusTXbbY"
@@ -21,7 +58,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847485963865-n691h9td28r1ej4gulu7aj33utjr7mgf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
