@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="187dp"
+        android:layout_height="27dp"
+        android:text="Tỉnh thành sinh sống"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="609dp" />
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="379dp"
+        android:layout_height="40dp"
+        android:background="@drawable/edit_text_bg"
+        android:ems="10"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:text="1041 Trần Xuân Soạn"
+        android:drawableRight="@drawable/ic_edit"
+        android:textSize="15dp"
+
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="560dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="111dp"
+        android:layout_height="28dp"
+        android:text="Địa chỉ"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="532dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="111dp"
+        android:layout_height="28dp"
+        android:text="Ngày sinh"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="459dp" />
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="379dp"
+        android:layout_height="40dp"
+        android:background="@drawable/edit_text_bg"
+        android:ems="10"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:text="Nhập email"
+        android:drawableRight="@drawable/ic_edit"
+
+        android:textSize="15dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="413dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="111dp"
+        android:layout_height="28dp"
+        android:text="Email"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="385dp" />
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="379dp"
+        android:layout_height="40dp"
+        android:background="@drawable/edit_text_bg"
+        android:ems="10"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:text="0984160070"
+        android:textSize="15dp"
+
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="345dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="17dp"
+        android:layout_height="26dp"
+        android:text="*"
+        android:textColor="@color/red"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="317dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="111dp"
+        android:layout_height="28dp"
+        android:text="Số điện thoại"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="317dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thông tin cá nhân"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="52dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_arrow_back"
+        android:drawablePadding="6dp"
+        android:text="Quay lại"
+        android:textSize="18sp"
+        android:textColor="#00B4D8"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="5dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="50dp"
+        tools:layout_editor_absoluteX="164dp"
+        tools:layout_editor_absoluteY="120dp" >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/orange"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/img" />
+    </androidx.cardview.widget.CardView>
+
+    <RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:buttonTint="@color/orange"
+        android:checked="true"
+        android:text="Anh"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="209dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="56dp"
+        android:layout_height="36dp"
+        android:buttonTint="@color/orange"
+        android:text="Chị"
+        tools:layout_editor_absoluteX="99dp"
+        tools:layout_editor_absoluteY="209dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="17dp"
+        android:layout_height="26dp"
+        android:text="*"
+        android:textColor="@color/red"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="247dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="75dp"
+        android:layout_height="26dp"
+        android:text="Họ và tên"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="247dp" />
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="379dp"
+        android:layout_height="40dp"
+        android:drawableRight="@drawable/ic_edit"
+        android:ems="10"
+        android:background="@drawable/edit_text_bg"
+        android:inputType="text"
+        android:textSize="15dp"
+        android:paddingLeft="20dp"
+        android:text="Nguyễn Tự Lực"
+
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="273dp" />
+
+    <EditText
+        android:layout_width="379dp"
+        android:layout_height="40dp"
+        android:background="@drawable/edit_text_bg"
+        android:ems="10"
+        android:inputType="date"
+        android:drawableRight="@drawable/ic_edit"
+        android:paddingLeft="20dp"
+        android:text="01/01/1970"
+        android:textSize="15dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="487dp" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="379dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:paddingLeft="20dp"
+        android:textSize="15dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="643dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
