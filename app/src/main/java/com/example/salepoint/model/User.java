@@ -4,6 +4,8 @@ public class User {
     private String Name;
     private String Password;
 
+    private int point;
+
     private boolean IsStaff;
 
     public User() {
@@ -13,6 +15,7 @@ public class User {
         Name = name;
         Password = password;
         IsStaff = false;
+        point = 0;
     }
 
     public boolean getIsStaff() {
@@ -38,5 +41,21 @@ public class User {
 
     public void setPassword(String password) {
         Password = password;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
+
+    public boolean isStaff() {
+        return IsStaff;
+    }
+
+    public void setStaff(boolean staff) {
+        IsStaff = staff;
     }
 }

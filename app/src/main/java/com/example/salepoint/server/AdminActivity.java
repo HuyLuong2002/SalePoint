@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.LifecycleObserver;
 import com.example.salepoint.R;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -16,9 +17,18 @@ public class AdminActivity extends AppCompatActivity implements LifecycleObserve
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_activity);
+        setContentView(R.layout.activity_admin);
 
         ImageView qrCodeScanner = findViewById(R.id.qrCodeScanner);
+        CardView serviceCardView = findViewById(R.id.serviceCardView);
+        serviceCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, ServiceActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         qrCodeScanner.setOnClickListener(new View.OnClickListener() {
             @Override

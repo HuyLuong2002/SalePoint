@@ -36,9 +36,9 @@
         android:theme="@style/Theme.SalePoint"
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
-<!--        <activity-->
-<!--            android:name=".LoginGoogleActivity"-->
-<!--            android:exported="true" />-->
+        <activity
+            android:name=".LoginGoogleActivity"
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
             android:exported="false"
@@ -50,12 +50,22 @@
             android:label="Verify Activity"
             android:theme="@style/Theme.SalePoint" />
         <activity
-            android:name=".server.AdminActivity"
+            android:name=".server.PaymentActivity"
             android:exported="false"
             android:label="Admin Activity"
             android:theme="@style/Theme.ModernDashboard" />
         <activity
-            android:name=".MainActivity"
+            android:name=".server.ServiceActivity"
+            android:exported="false"
+            android:label="Admin Activity"
+            android:theme="@style/Theme.ModernDashboard" />
+        <activity
+            android:name=".server.AddServiceActivity"
+            android:exported="false"
+            android:label="Admin Activity"
+            android:theme="@style/Theme.ModernDashboard" />
+        <activity
+            android:name=".server.AdminActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -65,7 +75,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginGoogleActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="Verify Activity">
             <intent-filter>
