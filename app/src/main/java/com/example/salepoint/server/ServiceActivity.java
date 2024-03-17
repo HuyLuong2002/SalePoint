@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.salepoint.R;
+import com.example.salepoint.RetrofitClient;
 import com.example.salepoint.model.Service;
+import com.example.salepoint.services.ServicesService;
 import com.example.salepoint.ui.adapters.ServiceAdapter;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +25,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ServiceActivity extends AppCompatActivity {
 
@@ -41,6 +47,7 @@ public class ServiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ServiceActivity.this, AddServiceActivity.class);
+                intent.putExtra("mode", "create");
                 startActivity(intent);
             }
         });
@@ -49,25 +56,25 @@ public class ServiceActivity extends AppCompatActivity {
     }
 
     public void setDataOnListView() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("services");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        ServicesService apiService = RetrofitClient.getClient().create(ServicesService.class);
+        Call<List<Service>> call = apiService.getServices();
+        call.enqueue(new Callback<List<Service>>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Service> serviceList = new ArrayList<>();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Service service = dataSnapshot.getValue(Service.class);
-                    serviceList.add(service);
+            public void onResponse(Call<List<Service>> call, Response<List<Service>> response) {
+                if (response.isSuccessful()) {
+                    List<Service> serviceList = response.body();
+                    // Update RecyclerView with the new data
+                    serviceAdapter = new ServiceAdapter(serviceList);
+                    rcvListService.setLayoutManager(new LinearLayoutManager(ServiceActivity.this));
+                    rcvListService.setAdapter(serviceAdapter);
+                } else {
+                    // Handle error
                 }
-                System.out.println(serviceList.size());
-                // Update RecyclerView with the new data
-                serviceAdapter = new ServiceAdapter(serviceList);
-                rcvListService.setLayoutManager(new LinearLayoutManager(ServiceActivity.this));
-                rcvListService.setAdapter(serviceAdapter);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle error
+            public void onFailure(Call<List<Service>> call, Throwable t) {
+                // Handle failure
             }
         });
     }
