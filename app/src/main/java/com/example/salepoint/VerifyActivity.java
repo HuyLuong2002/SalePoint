@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.salepoint.model.User;
 import com.example.salepoint.server.AdminActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -34,8 +38,17 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 
 public class VerifyActivity extends AppCompatActivity {
+
+    private Button btnGetOTP;
+    private EditText number1;
+    private EditText number2;
+    private EditText number3;
+    private EditText number4;
+    private EditText number5;
+    private EditText number6;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,98 +58,120 @@ public class VerifyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String verificationId = intent.getStringExtra("verificationId");
         String phoneNumber = intent.getStringExtra("mobile");
-        PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, "123456");
-        FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        btnGetOTP = findViewById(R.id.getCodeButton);
+        number1 = findViewById(R.id.NumberOTP_1);
+        number2 = findViewById(R.id.NumberOTP_2);
+        number3 = findViewById(R.id.NumberOTP_3);
+        number4 = findViewById(R.id.NumberOTP_4);
+        number5 = findViewById(R.id.NumberOTP_5);
+        number6 = findViewById(R.id.NumberOTP_6);
+
+        btnGetOTP.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
+            public void onClick(View v) {
+                String OTP_number = number1.getText().toString() + number2.getText().toString() + number3.getText().toString() + number4.getText().toString() + number5.getText().toString() + number6.getText().toString();
+                PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, OTP_number);
+                FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference usersRef = database.getReference("users");
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference usersRef = database.getReference("users");
 
-                    // Kiểm tra xem người dùng có tồn tại hay không
-                    usersRef.child(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                // Người dùng đã tồn tại, xử lý theo cách bạn muốn, ví dụ thông báo cho người dùng
-                                // Kiểm tra xem người dùng có là admin không
-                                boolean isStaff = dataSnapshot.child("isStaff").getValue(Boolean.class);
-                                Intent intentAdmin = null;
-                                if (isStaff) {
-                                    // Người dùng là admin, chuyển qua màn hình admin
-                                    intentAdmin = new Intent(VerifyActivity.this, AdminActivity.class);
-
-                                    startActivity(intentAdmin);
-                                } else {
-                                    // Người dùng không phải là admin, có thể làm gì đó khác ở đây
-
-                                }
-                            } else {
-                                // Người dùng không tồn tại, thêm vào cơ sở dữ liệu
-                                User newUser = new User(phoneNumber, "");
-                                usersRef.child(phoneNumber).setValue(newUser);
-
-                                // Chuyển đối tượng thành chuỗi JSON
-
-                                Gson gson = new Gson();
-                                String json = gson.toJson(newUser);
-
-                                // Tạo mã QR code từ chuỗi JSON
-                                Bitmap bitmap = null;
-                                try {
-                                    bitmap = encodeAsBitmap(json);
-                                    String fileName = phoneNumber + ".jpg";
-                                    // Tạo tham chiếu đến Firebase Storage
-                                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-
-                                    // Tham chiếu đến một đường dẫn (ví dụ: images/) và tên file
-                                    StorageReference imageRef = storageRef.child("qr_code/" + fileName);
-
-                                    // Chuyển đổi Bitmap thành byte array
-                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                                    byte[] data = baos.toByteArray();
-
-                                    // Upload byte array lên Firebase Storage
-                                    UploadTask uploadTask = imageRef.putBytes(data);
-
-                                    // Lắng nghe sự kiện hoàn thành upload
-                                    uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                // Upload thành công, lấy đường dẫn URL của ảnh
-                                                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                    @Override
-                                                    public void onSuccess(Uri uri) {
-                                                        String imageUrl = uri.toString();
-                                                        System.out.println(imageUrl);
-                                                        // Lưu URL của ảnh vào cơ sở dữ liệu Firebase Realtime Database hoặc Cloud Firestore nếu cần
-                                                    }
-                                                });
-                                            } else {
-                                                //Update không thành công
-                                            }
+                            // Kiểm tra xem người dùng có tồn tại hay không
+                            usersRef.child(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        // Người dùng đã tồn tại, xử lý theo cách bạn muốn, ví dụ thông báo cho người dùng
+                                        // Kiểm tra xem người dùng có là admin không
+                                        boolean isStaff = dataSnapshot.child("isStaff").getValue(Boolean.class);
+                                        Intent intentAdmin = null;
+                                        if (isStaff) {
+                                            // Người dùng là admin, chuyển qua màn hình admin
+                                            intentAdmin = new Intent(VerifyActivity.this, AdminActivity.class);
+                                            startActivity(intentAdmin);
+                                        } else {
+                                            // Người dùng không phải là admin, có thể làm gì đó khác ở đây
+                                            Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
+                                            intentHome.putExtra("mobile", phoneNumber);
+                                            intentHome.putExtra("action", "login");
+                                            startActivity(intentHome);
                                         }
-                                    });
+                                    } else {
+                                        // Người dùng không tồn tại, thêm vào cơ sở dữ liệu
+                                        User newUser = new User(phoneNumber, "");
+                                        usersRef.child(phoneNumber).setValue(newUser);
 
-                                } catch (WriterException e) {
-                                    e.printStackTrace();
+                                        // Chuyển đối tượng thành chuỗi JSON
+
+                                        Gson gson = new Gson();
+                                        String json = gson.toJson(newUser);
+
+                                        // Tạo mã QR code từ chuỗi JSON
+                                        Bitmap bitmap = null;
+                                        try {
+                                            bitmap = encodeAsBitmap(json);
+                                            String fileName = phoneNumber + ".jpg";
+                                            // Tạo tham chiếu đến Firebase Storage
+                                            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+                                            // Tham chiếu đến một đường dẫn (ví dụ: images/) và tên file
+                                            StorageReference imageRef = storageRef.child("qr_code/" + fileName);
+
+                                            // Chuyển đổi Bitmap thành byte array
+                                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                            byte[] data = baos.toByteArray();
+
+                                            // Upload byte array lên Firebase Storage
+                                            UploadTask uploadTask = imageRef.putBytes(data);
+
+                                            // Lắng nghe sự kiện hoàn thành upload
+                                            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        // Upload thành công, lấy đường dẫn URL của ảnh
+                                                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                            @Override
+                                                            public void onSuccess(Uri uri) {
+                                                                String imageUrl = uri.toString();
+                                                                System.out.println(imageUrl);
+
+                                                                updateImageUrlForUser(phoneNumber, imageUrl);
+                                                                // Lưu URL của ảnh vào cơ sở dữ liệu Firebase Realtime Database hoặc Cloud Firestore nếu cần
+                                                                Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
+                                                                intentHome.putExtra("mobile", phoneNumber);
+                                                                intentHome.putExtra("action", "login");
+                                                                startActivity(intentHome);
+                                                            }
+                                                        });
+                                                    } else {
+                                                        //Update không thành công
+                                                    }
+                                                }
+                                            });
+
+                                        } catch (WriterException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            System.out.println("Database error: " + error.getMessage());
-                        }
-                    });
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    System.out.println("Database error: " + error.getMessage());
+                                }
+                            });
 
-                    Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(VerifyActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
-                }
+                            Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(VerifyActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
     }
@@ -161,4 +196,31 @@ public class VerifyActivity extends AppCompatActivity {
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;
     }
+
+    private void updateImageUrlForUser(String phoneNumber, String imageUrl) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("users");
+
+        // Tạo một HashMap để cập nhật thông tin hình ảnh
+        HashMap<String, Object> update = new HashMap<>();
+        update.put("link", imageUrl);
+
+        // Cập nhật thông tin hình ảnh của người dùng
+        usersRef.child(phoneNumber).updateChildren(update)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Cập nhật thành công
+                        Toast.makeText(VerifyActivity.this, "Cập nhật hình ảnh thành công", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Xử lý lỗi khi cập nhật không thành công
+                        Toast.makeText(VerifyActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 }

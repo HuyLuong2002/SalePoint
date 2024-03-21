@@ -206,7 +206,7 @@
             app:shapeAppearanceOverlay="@style/circular" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
@@ -218,7 +218,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textViewPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
@@ -246,7 +246,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textViewPoint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="335dp"
