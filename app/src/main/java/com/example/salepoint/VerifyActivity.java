@@ -85,7 +85,7 @@ public class VerifyActivity extends AppCompatActivity {
                                 // Tạo mã QR code từ chuỗi JSON
                                 Bitmap bitmap = null;
                                 try {
-                                    bitmap = encodeAsBitmap(json);
+                                    bitmap = encodeAsBitmap(phoneNumber);
                                     String fileName = phoneNumber + ".jpg";
                                     // Tạo tham chiếu đến Firebase Storage
                                     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
