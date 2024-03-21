@@ -139,6 +139,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
                         // Cập nhật dịch vụ thành công
                         // Cập nhật giao diện người dùng nếu cần
                         refreshServiceData();
+
                         System.out.println("Delete succes");
 
                     } else {

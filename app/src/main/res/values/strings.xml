@@ -21,6 +21,7 @@
     <string name="default_web_client_id">"not set"</string>
     <string name="dialog_confirm">Xác nhận</string>
     <string name="dialog_cancel">Hủy</string>
+    <string name="dialog_off">Đóng</string>
     <string name="dialog_title">Bạn có xác nhận muốn xóa không?</string>
     <string name="servide_dialog_title">Danh sách dịch vụ</string>
 </resources>

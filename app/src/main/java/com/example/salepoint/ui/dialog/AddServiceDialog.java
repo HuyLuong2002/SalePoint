@@ -1,8 +1,10 @@
 package com.example.salepoint.ui.dialog;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.example.salepoint.R;
 import com.example.salepoint.dao.impl.ServiceDAOImpl;
 import com.example.salepoint.model.Service;
 import com.example.salepoint.response.ServiceResponse;
+import com.example.salepoint.server.PaymentActivity;
 import com.example.salepoint.server.ServiceActivity;
 import com.example.salepoint.ui.adapter.PaymentServiceAdapter;
 import com.example.salepoint.ui.adapter.ServiceAdapter;
@@ -47,13 +50,25 @@ public class AddServiceDialog extends AppCompatDialogFragment {
 
         builder.setView(view)
                 .setTitle(R.string.servide_dialog_title)
-                .setPositiveButton(R.string.dialog_confirm, (dialogInterface, i) -> {})
+                .setPositiveButton(R.string.dialog_confirm, (dialogInterface, i) -> {
+
+                    Intent intent = new Intent(view.getContext(), PaymentActivity.class);
+                    startActivity(intent);
+                })
                 .setNegativeButton(R.string.dialog_cancel, (dialogInterface, i) -> {
+                    if(PaymentActivity.selectedServiceList.isEmpty())
+                    {
+                        PaymentActivity.selectedServiceList.clear();
+                    }
+
                     dialogInterface.cancel();
+                    Intent intent = new Intent(view.getContext(), PaymentActivity.class);
+                    startActivity(intent);
                 });
 
         return builder.create();
     }
+
 
     public void setDataOnListView() {
         // Sử dụng ServiceDAOImpl để gọi API

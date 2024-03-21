@@ -15,10 +15,11 @@ import com.example.salepoint.R;
 import com.example.salepoint.model.Service;
 import com.example.salepoint.server.PaymentActivity;
 import com.example.salepoint.ui.dialog.AddServiceDialog;
+import com.example.salepoint.util.Utils;
 
 import java.util.List;
 
-public class PaymentServiceAdapter extends RecyclerView.Adapter<PaymentServiceAdapter.ServiceViewHolder>{
+public class PaymentServiceAdapter extends RecyclerView.Adapter<PaymentServiceAdapter.ServiceViewHolder> {
     private List<Service> serviceList;
 
     public PaymentServiceAdapter(List<Service> serviceList) {
@@ -36,11 +37,25 @@ public class PaymentServiceAdapter extends RecyclerView.Adapter<PaymentServiceAd
     public void onBindViewHolder(@NonNull ServiceViewHolder holder, int position) {
         Service service = serviceList.get(position);
         holder.bind(service);
+
+        if (!PaymentActivity.selectedServiceList.isEmpty()) {
+            // Kiểm tra xem dịch vụ đã được chọn hay không
+            for (Service service1 :
+                    PaymentActivity.selectedServiceList) {
+                if (service.getId().equals(service1.getId())) {
+                    holder.checkBox.setChecked(true);
+                    holder.checkBox.setEnabled(false); // Không cho phép người dùng click nếu đã được chọn
+                }
+            }
+        }
+
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaymentActivity.selectedServiceList.add(serviceList.get(holder.getAdapterPosition()));
-
+                if (holder.checkBox.isChecked()) {
+                    PaymentActivity.selectedServiceList.add(serviceList.get(holder.getAdapterPosition()));
+                } else
+                    PaymentActivity.selectedServiceList.remove(serviceList.get(holder.getAdapterPosition()));
             }
         });
     }
@@ -69,7 +84,8 @@ public class PaymentServiceAdapter extends RecyclerView.Adapter<PaymentServiceAd
 
         public void bind(Service service) {
             textViewServiceName.setText(service.getName());
-            textViewServicePrice.setText(String.valueOf(service.getPrice()));
+            textViewServicePrice.setText(Utils.convertToVND(service.getPrice()));
+
         }
     }
 }

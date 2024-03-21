@@ -4,9 +4,11 @@ public class User {
     private String Name;
     private String Password;
 
-    private int point;
+    private int Point;
 
-    private boolean IsStaff;
+    private Boolean isStaff;
+
+    private String Link;
 
     public User() {
     }
@@ -14,21 +16,28 @@ public class User {
     public User(String name, String password) {
         Name = name;
         Password = password;
-        IsStaff = false;
-        point = 0;
+        isStaff = false;
+        Point = 0;
+        Link = "";
     }
 
     public boolean getIsStaff() {
-        return IsStaff;
+        return isStaff;
     }
 
     public void setIsStaff(boolean isStaff) {
-        IsStaff = isStaff;
+        this.isStaff = isStaff;
     }
-
-
     public String getName() {
         return Name;
+    }
+
+    public String getLink() {
+        return Link;
+    }
+
+    public void setLink(String link) {
+        Link = link;
     }
 
     public void setName(String name) {
@@ -44,18 +53,10 @@ public class User {
     }
 
     public int getPoint() {
-        return point;
+        return Point;
     }
 
     public void setPoint(int point) {
-        this.point = point;
-    }
-
-    public boolean isStaff() {
-        return IsStaff;
-    }
-
-    public void setStaff(boolean staff) {
-        IsStaff = staff;
+        this.Point = point;
     }
 }
