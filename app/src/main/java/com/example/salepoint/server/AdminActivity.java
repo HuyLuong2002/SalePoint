@@ -55,6 +55,7 @@ public class AdminActivity extends AppCompatActivity implements LifecycleObserve
                 Toast.makeText(this, "Scan cancelled", Toast.LENGTH_LONG).show();
             } else {
                 Intent intent = new Intent(AdminActivity.this, PaymentActivity.class);
+                intent.putExtra("phoneUserNumber", result.getContents());
                 startActivity(intent);
             }
         } else {
