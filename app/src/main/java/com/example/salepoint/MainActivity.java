@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String action = intent.getStringExtra("action");
-        System.out.println("action: " + action);
         if(action.equalsIgnoreCase("login"))
         {
             getUserDataFromLogin();
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             String uid = user.getUid();
             String phoneNumber = user.getPhoneNumber(); // Lấy số điện thoại của người dùng
             String ConvertPhoneNumber = convertToZeroStartPhoneNumber(phoneNumber);
-            getUserDataFromFirebase(ConvertPhoneNumber);
+            getUserDataFromFirebase(uid, phoneNumber);
 
             // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
             Log.d(TAG, "User ID: " + uid);
@@ -91,11 +90,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getUserDataFromFirebase(String phoneNumber) {
+    private void getUserDataFromFirebase(String uid, String phoneNumber) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
         // Thực hiện truy vấn để lấy dữ liệu của người dùng dựa trên số điện thoại
-        usersRef.child(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {

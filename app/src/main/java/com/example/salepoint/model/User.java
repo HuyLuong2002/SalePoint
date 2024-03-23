@@ -1,6 +1,7 @@
 package com.example.salepoint.model;
 
 public class User {
+    private String Phone;
     private String Name;
     private String Password;
 
@@ -13,12 +14,29 @@ public class User {
     public User() {
     }
 
+    public User(String phone, String name, String password) {
+        Phone = phone;
+        Name = name;
+        Password = password;
+        isStaff = false;
+        Point = 0;
+        Link = "";
+    }
+
     public User(String name, String password) {
         Name = name;
         Password = password;
         isStaff = false;
         Point = 0;
         Link = "";
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
     }
 
     public boolean getIsStaff() {

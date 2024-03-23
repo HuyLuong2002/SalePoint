@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
@@ -76,77 +77,86 @@ public class VerifyActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference usersRef = database.getReference("users");
+                            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
 
-                            // Kiểm tra xem người dùng có tồn tại hay không
-                            usersRef.child(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()) {
-                                        // Người dùng đã tồn tại, xử lý theo cách bạn muốn
-                                        boolean isStaff = dataSnapshot.child("isStaff").getValue(Boolean.class);
-                                        if (isStaff) {
-                                            // Người dùng là admin
-                                            Intent intentAdmin = new Intent(VerifyActivity.this, AdminActivity.class);
-                                            startActivity(intentAdmin);
+                            if (currentUser != null) {
+                                String userUid = currentUser.getUid();
+                                // Sử dụng userUid như một UUID trong hệ thống của bạn
+                                DatabaseReference usersRef = database.getReference("users");
+
+                                // Kiểm tra xem người dùng có tồn tại hay không
+                                usersRef.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            // Người dùng đã tồn tại, xử lý theo cách bạn muốn
+                                            boolean isStaff = dataSnapshot.child("isStaff").getValue(Boolean.class);
+                                            if (isStaff) {
+                                                // Người dùng là admin
+                                                Intent intentAdmin = new Intent(VerifyActivity.this, AdminActivity.class);
+                                                startActivity(intentAdmin);
+                                            } else {
+                                                // Người dùng không phải là admin
+                                                Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
+                                                intentHome.putExtra("mobile", phoneNumber);
+                                                intentHome.putExtra("action", "login");
+                                                startActivity(intentHome);
+                                            }
                                         } else {
-                                            // Người dùng không phải là admin
-                                            Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
-                                            intentHome.putExtra("mobile", phoneNumber);
-                                            intentHome.putExtra("action", "login");
-                                            startActivity(intentHome);
-                                        }
-                                    } else {
-                                        // Người dùng không tồn tại
-                                        User newUser = new User(phoneNumber, "");
-                                        usersRef.child(phoneNumber).setValue(newUser);
+                                            // Người dùng không tồn tại
+                                            User newUser = new User(phoneNumber, phoneNumber, "");
+                                            usersRef.child(userUid).setValue(newUser);
 
-                                        // Tạo mã QR code từ chuỗi JSON
-                                        Bitmap bitmap = null;
-                                        try {
-                                            bitmap = encodeAsBitmap(phoneNumber);
-                                            String fileName = phoneNumber + ".jpg";
-                                            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                                            StorageReference imageRef = storageRef.child("qr_code/" + fileName);
-                                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                                            byte[] data = baos.toByteArray();
-                                            UploadTask uploadTask = imageRef.putBytes(data);
+                                            // Tạo mã QR code từ chuỗi JSON
+                                            Bitmap bitmap = null;
+                                            try {
+                                                bitmap = encodeAsBitmap(userUid);
+                                                String fileName = userUid + ".jpg";
+                                                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                                                StorageReference imageRef = storageRef.child("qr_code/" + fileName);
+                                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                                byte[] data = baos.toByteArray();
+                                                UploadTask uploadTask = imageRef.putBytes(data);
 
-                                            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                            @Override
-                                                            public void onSuccess(Uri uri) {
-                                                                String imageUrl = uri.toString();
-                                                                updateImageUrlForUser(phoneNumber, imageUrl);
-                                                                Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
-                                                                intentHome.putExtra("mobile", phoneNumber);
-                                                                intentHome.putExtra("action", "login");
-                                                                startActivity(intentHome);
-                                                            }
-                                                        });
-                                                    } else {
-                                                        //Update không thành công
+                                                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                @Override
+                                                                public void onSuccess(Uri uri) {
+                                                                    String imageUrl = uri.toString();
+                                                                    updateImageUrlForUser(userUid, imageUrl);
+                                                                    Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
+                                                                    intentHome.putExtra("action", "login");
+                                                                    startActivity(intentHome);
+                                                                }
+                                                            });
+                                                        } else {
+                                                            //Update không thành công
+                                                        }
                                                     }
-                                                }
-                                            });
+                                                });
 
-                                        } catch (WriterException e) {
-                                            e.printStackTrace();
+                                            } catch (WriterException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
                                     }
-                                }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                    System.out.println("Database error: " + error.getMessage());
-                                }
-                            });
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        System.out.println("Database error: " + error.getMessage());
+                                    }
+                                });
 
-                            Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Người dùng chưa đăng nhập
+                            }
+
                         } else {
                             Toast.makeText(VerifyActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
                         }

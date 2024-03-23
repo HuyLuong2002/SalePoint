@@ -1,14 +1,16 @@
 package com.example.salepoint.model;
 
 
+import com.example.salepoint.util.Utils;
+
 public class Service {
 
     private String id;
     private String name;
     private int price;
     private boolean isActive;
-    private Timestamp createdAt;
-    private Timestamp modified;
+    private String createdAt;
+    private String modified;
     public Service() {
     }
 
@@ -23,7 +25,7 @@ public class Service {
         this.isActive = isActive;
     }
 
-    public Service(String id, String name, int price, boolean isActive, Timestamp createdAt, Timestamp modified) {
+    public Service(String id, String name, int price, boolean isActive, String createdAt, String modified) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -64,46 +66,19 @@ public class Service {
         isActive = active;
     }
 
-    public Timestamp getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getModified() {
+    public String getModified() {
         return modified;
     }
 
-    public void setModified(Timestamp modified) {
+    public void setModified(String modified) {
         this.modified = modified;
     }
-
-    public static class Timestamp {
-        private long seconds;
-        private long nanoseconds;
-
-        // Getters và setters
-
-        public long getSeconds() {
-            return seconds;
-        }
-
-        public void setSeconds(long seconds) {
-            this.seconds = seconds;
-        }
-
-        public long getNanoseconds() {
-            return nanoseconds;
-        }
-
-        public void setNanoseconds(long nanoseconds) {
-            this.nanoseconds = nanoseconds;
-        }
-
-
-        // Có thể thêm phương thức khác để chuyển đổi timestamp này thành các đối tượng từ java.time.*
-    }
-
 }

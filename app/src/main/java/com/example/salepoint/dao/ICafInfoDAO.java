@@ -1,0 +1,21 @@
+package com.example.salepoint.dao;
+
+import com.example.salepoint.model.CarInfo;
+import com.example.salepoint.model.Service;
+import com.example.salepoint.response.CarInfoResponse;
+import com.example.salepoint.response.ServiceResponse;
+
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+
+public interface ICafInfoDAO {
+
+    @GET("car_infos")
+    Call<CarInfoResponse> getCarInfo();
+
+    @GET("{user_id}/my_car_info")
+    Call<CarInfoResponse> getCarsOfUser(@Path("user_id") String userId);
+}
