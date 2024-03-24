@@ -31,4 +31,15 @@ public class Utils {
         return formatter.format(amount);
     }
 
+    // Hàm để chuyển đổi số điện thoại về dạng bắt đầu bằng số 0
+    public static String convertToZeroStartPhoneNumber(String phoneNumber) {
+        if (phoneNumber.startsWith("+84")) {
+            // Nếu số điện thoại bắt đầu bằng +84, thay thế +84 bằng 0
+            return "0" + phoneNumber.substring(3);
+        } else {
+            // Nếu không bắt đầu bằng +84, không cần thay đổi, trả về số điện thoại ban đầu
+            return phoneNumber;
+        }
+    }
+
 }

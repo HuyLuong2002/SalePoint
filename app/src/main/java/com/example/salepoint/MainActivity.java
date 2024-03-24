@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.example.salepoint.model.User;
+import com.example.salepoint.util.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.Nullable;
@@ -27,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView NameUser;
     private TextView PhoneNumber;
     private TextView Point;
+    private ImageView Qrcode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,13 +62,15 @@ public class MainActivity extends AppCompatActivity {
         NameUser = findViewById(R.id.textViewName);
         PhoneNumber = findViewById(R.id.textViewPhoneNumber);
         Point = findViewById(R.id.textViewPoint);
+        Qrcode = findViewById(R.id.imageViewQr);
 
         Intent intent = getIntent();
+        String userID = intent.getStringExtra("userId");
+        String phone = intent.getStringExtra("mobile");
         String action = intent.getStringExtra("action");
-        if(action.equalsIgnoreCase("login"))
+        if(action.equalsIgnoreCase("login") && userID != null)
         {
-            getUserDataFromLogin();
-
+            getUserDataFromFirebase(userID, phone);
         }
 
 
@@ -78,8 +84,9 @@ public class MainActivity extends AppCompatActivity {
             // User đã đăng nhập, bạn có thể lấy thông tin của user từ đây
             String uid = user.getUid();
             String phoneNumber = user.getPhoneNumber(); // Lấy số điện thoại của người dùng
-            String ConvertPhoneNumber = convertToZeroStartPhoneNumber(phoneNumber);
-            getUserDataFromFirebase(uid, phoneNumber);
+            String ConvertPhoneNumber = Utils.convertToZeroStartPhoneNumber(phoneNumber);
+            System.out.println("Phone Number: " + phoneNumber);
+            System.out.println("Convert phone: " + ConvertPhoneNumber);
 
             // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
             Log.d(TAG, "User ID: " + uid);
@@ -90,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getUserDataFromFirebase(String uid, String phoneNumber) {
+    private void getUserDataFromFirebase(String uid, String phone) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
         // Thực hiện truy vấn để lấy dữ liệu của người dùng dựa trên số điện thoại
@@ -103,19 +110,25 @@ public class MainActivity extends AppCompatActivity {
                     User user = dataSnapshot.getValue(User.class);
                     if (user != null) {
                         String name = user.getName();
+                        String phone = user.getPhone();
                         boolean isStaff = user.getIsStaff();
                         String link = user.getLink();
                         int point = user.getPoint();
 
                         NameUser.setText(name);
-                        PhoneNumber.setText(phoneNumber);
+                        PhoneNumber.setText(phone);
                         Point.setText(String.valueOf(point));
+                        Picasso.get().load(link).into(Qrcode);
+
+                        // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
+                        Log.d(TAG, "User ID: " + uid);
+                        Log.d(TAG, "Phone Number: " + phone);
 
                         // Xử lý thông tin người dùng theo nhu cầu của bạn
                     }
                 } else {
                     // Không tìm thấy dữ liệu cho số điện thoại đã cho
-                    Log.d(TAG, "Không tìm thấy dữ liệu cho số điện thoại: " + phoneNumber);
+                    Log.d(TAG, "Không tìm thấy dữ liệu cho số điện thoại: " + phone);
                 }
             }
 
@@ -126,17 +139,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    // Hàm để chuyển đổi số điện thoại về dạng bắt đầu bằng số 0
-    private String convertToZeroStartPhoneNumber(String phoneNumber) {
-        if (phoneNumber.startsWith("+84")) {
-            // Nếu số điện thoại bắt đầu bằng +84, thay thế +84 bằng 0
-            return "0" + phoneNumber.substring(3);
-        } else {
-            // Nếu không bắt đầu bằng +84, không cần thay đổi, trả về số điện thoại ban đầu
-            return phoneNumber;
-        }
-    }
-
 
 }

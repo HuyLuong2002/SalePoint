@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:id="@+id/initialLayout">
 
         <ImageView
             android:layout_width="160dp"
@@ -32,16 +33,9 @@
             android:text="Enter the OTP sent to"
             android:textSize="14sp"
             android:layout_marginTop="10dp"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
             android:gravity="center"
-            android:textStyle="bold"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/teal_300"/>
+            android:textColor="@color/black"/>
+
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,6 +56,7 @@
                 android:textColor="@color/teal_300"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textColorHint="@color/black"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <EditText
@@ -75,6 +70,7 @@
                 android:maxLength="1"
                 android:textColor="@color/teal_300"
                 android:textSize="20dp"
+                android:textColorHint="@color/black"
                 android:textStyle="bold"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -90,6 +86,7 @@
                 android:textColor="@color/teal_300"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textColorHint="@color/black"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <EditText
@@ -104,6 +101,7 @@
                 android:textColor="@color/teal_300"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textColorHint="@color/black"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <EditText
@@ -118,6 +116,7 @@
                 android:textColor="@color/teal_300"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textColorHint="@color/black"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <EditText
@@ -132,6 +131,7 @@
                 android:textColor="@color/teal_300"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textColorHint="@color/black"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
             
         </LinearLayout>
@@ -148,7 +148,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Have you received OTP?"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -171,6 +172,46 @@
             android:textColor="#3B84F1"
             android:textSize="16sp"
             tools:ignore="VisualLintButtonSize" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/passwordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/padlock"/>
+
+        <!-- Text field nhập password và nút -->
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Password"
+            android:padding="18dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_corner"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"/>
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/white"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:textColor="#3B84F1"
+            android:text="Login" />
 
     </LinearLayout>
 

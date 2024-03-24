@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,12 @@ public class VerifyActivity extends AppCompatActivity {
     private EditText number4;
     private EditText number5;
     private EditText number6;
+    private EditText txtPassword;
+    private Button btnLogin;
+    private LinearLayout initialLayout;
+    private LinearLayout passwordLayout;
+    private int flag = 0;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,12 +67,17 @@ public class VerifyActivity extends AppCompatActivity {
         String verificationId = intent.getStringExtra("verificationId");
         String phoneNumber = intent.getStringExtra("mobile");
         btnGetOTP = findViewById(R.id.getCodeButton);
+        btnLogin = findViewById(R.id.loginButton);
+        initialLayout = findViewById(R.id.initialLayout);
+        passwordLayout = findViewById(R.id.passwordLayout);
+        txtPassword = findViewById(R.id.passwordEditText);
         number1 = findViewById(R.id.NumberOTP_1);
         number2 = findViewById(R.id.NumberOTP_2);
         number3 = findViewById(R.id.NumberOTP_3);
         number4 = findViewById(R.id.NumberOTP_4);
         number5 = findViewById(R.id.NumberOTP_5);
         number6 = findViewById(R.id.NumberOTP_6);
+
         btnGetOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +102,7 @@ public class VerifyActivity extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()) {
+                                            flag = 1;
                                             // Người dùng đã tồn tại, xử lý theo cách bạn muốn
                                             boolean isStaff = dataSnapshot.child("isStaff").getValue(Boolean.class);
                                             if (isStaff) {
@@ -104,45 +117,56 @@ public class VerifyActivity extends AppCompatActivity {
                                                 startActivity(intentHome);
                                             }
                                         } else {
-                                            // Người dùng không tồn tại
-                                            User newUser = new User(phoneNumber, phoneNumber, "");
-                                            usersRef.child(userUid).setValue(newUser);
+                                            // Ẩn layout ban đầu
+                                            initialLayout.setVisibility(View.GONE);
+                                            // Hiển thị layout nhập password
+                                            passwordLayout.setVisibility(View.VISIBLE);
+                                            btnLogin.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    String Password = txtPassword.getText().toString();
+                                                    // Người dùng không tồn tại
+                                                    User newUser = new User(phoneNumber, phoneNumber, Password);
+                                                    usersRef.child(userUid).setValue(newUser);
 
-                                            // Tạo mã QR code từ chuỗi JSON
-                                            Bitmap bitmap = null;
-                                            try {
-                                                bitmap = encodeAsBitmap(userUid);
-                                                String fileName = userUid + ".jpg";
-                                                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                                                StorageReference imageRef = storageRef.child("qr_code/" + fileName);
-                                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                                                byte[] data = baos.toByteArray();
-                                                UploadTask uploadTask = imageRef.putBytes(data);
+                                                    // Tạo mã QR code từ chuỗi JSON
+                                                    Bitmap bitmap = null;
+                                                    try {
+                                                        bitmap = encodeAsBitmap(userUid);
+                                                        String fileName = userUid + ".jpg";
+                                                        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                                                        StorageReference imageRef = storageRef.child("qr_code/" + fileName);
+                                                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                                        byte[] data = baos.toByteArray();
+                                                        UploadTask uploadTask = imageRef.putBytes(data);
 
-                                                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                                @Override
-                                                                public void onSuccess(Uri uri) {
-                                                                    String imageUrl = uri.toString();
-                                                                    updateImageUrlForUser(userUid, imageUrl);
-                                                                    Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
-                                                                    intentHome.putExtra("action", "login");
-                                                                    startActivity(intentHome);
+                                                        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                        @Override
+                                                                        public void onSuccess(Uri uri) {
+                                                                            String imageUrl = uri.toString();
+                                                                            updateImageUrlForUser(userUid, imageUrl);
+                                                                            Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
+                                                                            intentHome.putExtra("action", "login");
+                                                                            startActivity(intentHome);
+                                                                        }
+                                                                    });
+                                                                } else {
+                                                                    //Update không thành công
                                                                 }
-                                                            });
-                                                        } else {
-                                                            //Update không thành công
-                                                        }
-                                                    }
-                                                });
+                                                            }
+                                                        });
 
-                                            } catch (WriterException e) {
-                                                e.printStackTrace();
-                                            }
+                                                    } catch (WriterException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
                                         }
                                     }
 
@@ -151,17 +175,20 @@ public class VerifyActivity extends AppCompatActivity {
                                         System.out.println("Database error: " + error.getMessage());
                                     }
                                 });
-
-                                Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                if (flag == 1) {
+                                    Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(VerifyActivity.this, "Nhập OTP thành công!", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 // Người dùng chưa đăng nhập
                             }
-
                         } else {
                             Toast.makeText(VerifyActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+                flag = 0;
             }
         });
     }

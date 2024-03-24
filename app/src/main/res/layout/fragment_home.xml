@@ -243,7 +243,8 @@
             android:layout_marginStart="295dp"
             android:layout_marginTop="35dp"
             android:text="Điểm:"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/textViewPoint"
@@ -251,6 +252,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="335dp"
             android:layout_marginTop="35dp"
+            android:textColor="@color/black"
             android:text="31.225"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -283,7 +285,7 @@
             app:layout_constraintVertical_bias="0.127" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/imageViewQr"
             android:layout_width="149dp"
             android:layout_height="152dp"
             android:layout_alignStart="@+id/textView5"
@@ -309,6 +311,7 @@
             android:layout_marginEnd="206dp"
             android:layout_marginBottom="54dp"
             android:gravity="center"
+            android:textColor="@color/black"
             android:text="Đưa mã cho nhân viên để tích, sử dụng điểm" />
 
     </RelativeLayout>
