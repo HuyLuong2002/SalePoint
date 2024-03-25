@@ -104,6 +104,7 @@ public class VerifyActivity extends AppCompatActivity {
                                         if (dataSnapshot.exists()) {
                                             flag = 1;
                                             // Người dùng đã tồn tại, xử lý theo cách bạn muốn
+                                            String userId = dataSnapshot.getKey();
                                             boolean isStaff = dataSnapshot.child("isStaff").getValue(Boolean.class);
                                             if (isStaff) {
                                                 // Người dùng là admin
@@ -111,8 +112,10 @@ public class VerifyActivity extends AppCompatActivity {
                                                 startActivity(intentAdmin);
                                             } else {
                                                 // Người dùng không phải là admin
+
                                                 Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
                                                 intentHome.putExtra("mobile", phoneNumber);
+                                                intentHome.putExtra("userId", userId);
                                                 intentHome.putExtra("action", "login");
                                                 startActivity(intentHome);
                                             }

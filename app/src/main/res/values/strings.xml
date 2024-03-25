@@ -24,4 +24,5 @@
     <string name="dialog_off">Đóng</string>
     <string name="dialog_title">Bạn có xác nhận muốn xóa không?</string>
     <string name="servide_dialog_title">Danh sách dịch vụ</string>
+    <string name="carinfo_dialog_title">Danh sách thông tin xe</string>
 </resources>

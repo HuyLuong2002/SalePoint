@@ -68,9 +68,18 @@ public class PaymentActivity extends AppCompatActivity {
 
         carInfoDAO = new CarInfoDAOImpl();
         MaterialButton btnAddService = findViewById(R.id.btnAddService);
+        MaterialButton btnAddCarInfo = findViewById(R.id.btnAddCarInfo);
         TextInputEditText editText = findViewById(R.id.textView8);
         TextInputEditText editText1 = findViewById(R.id.textView16);
         TextInputEditText editText2 = findViewById(R.id.textView18);
+
+        
+        btnAddCarInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         btnAddService.setOnClickListener(new View.OnClickListener() {
             @Override
