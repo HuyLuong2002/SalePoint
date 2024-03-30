@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại: "
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtUserPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập tên số điện thoại" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Tên: "
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Nhập tên" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Giới tính:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <RadioGroup
+            android:id="@+id/rdg_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:checkedButton="@+id/rb_active">
+
+            <RadioButton
+                android:id="@+id/rb_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nam" />
+
+            <RadioButton
+                android:id="@+id/rb_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Nữ" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Ngày sinh:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtUserDateBirth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:hint="Nhập ngày sinh" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Tình trạng tài khoản: "
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <RadioGroup
+            android:id="@+id/rdg_active"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:checkedButton="@+id/rb_active">
+
+            <RadioButton
+                android:id="@+id/rb_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Active" />
+
+            <RadioButton
+                android:id="@+id/rb_inactive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Inactive" />
+        </RadioGroup>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Sửa"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

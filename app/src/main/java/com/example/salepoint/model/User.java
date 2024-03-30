@@ -1,34 +1,41 @@
 package com.example.salepoint.model;
 
 public class User {
+    private String Id;
     private String Phone;
     private String Name;
     private String Password;
 
     private int Point;
 
-    private Boolean isStaff;
+    private boolean isStaff;
 
     private String Link;
+
+    private String Gender;
+    private String DateBirth;
+
+    private boolean isActive;
+
+    private String Created;
+    private String Modified;
+
 
     public User() {
     }
 
-    public User(String phone, String name, String password) {
+    public User(String phone, String name, String password, String gender, String dateBirth, String created, String modified) {
         Phone = phone;
         Name = name;
         Password = password;
+        Gender = gender;
+        DateBirth = dateBirth;
+        Created = created;
+        Modified = modified;
         isStaff = false;
         Point = 0;
         Link = "";
-    }
-
-    public User(String name, String password) {
-        Name = name;
-        Password = password;
-        isStaff = false;
-        Point = 0;
-        Link = "";
+        isActive = true;
     }
 
     public String getPhone() {
@@ -45,6 +52,14 @@ public class User {
 
     public void setIsStaff(boolean isStaff) {
         this.isStaff = isStaff;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
     public String getName() {
         return Name;
@@ -77,4 +92,46 @@ public class User {
     public void setPoint(int point) {
         this.Point = point;
     }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public String getGender() {
+        return Gender;
+    }
+
+    public void setGender(String gender) {
+        Gender = gender;
+    }
+
+    public String getDateBirth() {
+        return DateBirth;
+    }
+
+    public void setDateBirth(String dateBirth) {
+        DateBirth = dateBirth;
+    }
+
+    public String getCreated() {
+        return Created;
+    }
+
+    public void setCreated(String created) {
+        Created = created;
+    }
+
+    public String getModified() {
+        return Modified;
+    }
+
+    public void setModified(String modified) {
+        Modified = modified;
+    }
+
+
 }

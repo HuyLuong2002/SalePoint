@@ -23,8 +23,7 @@ public class CarInfo {
     public CarInfo() {
     }
 
-    public CarInfo(String id, String name, String car_company, int block_division, String license_plate, int speedometer, int number_of_oil_changes, String user, boolean isActive, String createdAt, String modified) {
-        this.id = id;
+    public CarInfo(String name, String car_company, int block_division, String license_plate, int speedometer, int number_of_oil_changes, String user, boolean isActive, String createdAt, String modified) {
         this.name = name;
         this.car_company = car_company;
         this.block_division = block_division;
@@ -37,17 +36,14 @@ public class CarInfo {
         this.modified = modified;
     }
 
-    public CarInfo(String id, String car_company, int block_division, String license_plate, int speedometer, int number_of_oil_changes, String user, boolean isActive, String createdAt, String modified) {
-        this.id = id;
+    public CarInfo(String name, String car_company, int block_division, String license_plate, int speedometer, int number_of_oil_changes, String user) {
+        this.name = name;
         this.car_company = car_company;
         this.block_division = block_division;
         this.license_plate = license_plate;
         this.speedometer = speedometer;
         this.number_of_oil_changes = number_of_oil_changes;
         this.user = user;
-        this.isActive = isActive;
-        this.createdAt = createdAt;
-        this.modified = modified;
     }
 
     public String getName() {

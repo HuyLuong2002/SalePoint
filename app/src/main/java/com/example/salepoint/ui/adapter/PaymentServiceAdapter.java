@@ -1,11 +1,9 @@
 package com.example.salepoint.ui.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.salepoint.R;
 import com.example.salepoint.model.Service;
 import com.example.salepoint.server.PaymentActivity;
-import com.example.salepoint.ui.dialog.AddServiceDialog;
 import com.example.salepoint.util.Utils;
 
 import java.util.List;
@@ -29,7 +26,7 @@ public class PaymentServiceAdapter extends RecyclerView.Adapter<PaymentServiceAd
     @NonNull
     @Override
     public ServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_dialog_listview_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_service_dialog_listview_item, parent, false);
         return new ServiceViewHolder(view);
     }
 

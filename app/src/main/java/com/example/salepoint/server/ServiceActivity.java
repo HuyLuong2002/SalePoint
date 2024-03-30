@@ -31,7 +31,7 @@ public class ServiceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_management_menu);
+        setContentView(R.layout.activity_service_management_list);
 
         MaterialButton btnAddService = findViewById(R.id.btnAddService);
         rcvListService = findViewById(R.id.recyclerView);

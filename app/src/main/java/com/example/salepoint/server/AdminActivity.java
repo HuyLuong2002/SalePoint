@@ -21,6 +21,16 @@ public class AdminActivity extends AppCompatActivity implements LifecycleObserve
 
         ImageView qrCodeScanner = findViewById(R.id.qrCodeScanner);
         CardView serviceCardView = findViewById(R.id.serviceCardView);
+        CardView userCardView = findViewById(R.id.userCard);
+
+        userCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, UserActivity.class);
+                startActivity(intent);
+            }
+        });
+
         serviceCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,11 +23,13 @@ import com.example.salepoint.R;
 import com.example.salepoint.dao.impl.CarInfoDAOImpl;
 import com.example.salepoint.dao.impl.ServiceDAOImpl;
 import com.example.salepoint.model.CarInfo;
+import com.example.salepoint.model.Receipt;
 import com.example.salepoint.model.Service;
 import com.example.salepoint.model.User;
 import com.example.salepoint.response.CarInfoResponse;
 import com.example.salepoint.ui.adapter.CarInfoSpinnerAdapter;
 import com.example.salepoint.ui.adapter.SelectedServiceAdapter;
+import com.example.salepoint.ui.dialog.AddCarInfoDialog;
 import com.example.salepoint.ui.dialog.AddServiceDialog;
 import com.example.salepoint.util.Utils;
 import com.google.android.material.button.MaterialButton;
@@ -47,19 +51,25 @@ import retrofit2.Response;
 
 public class PaymentActivity extends AppCompatActivity {
 
-    public static List<Service> selectedServiceList = new ArrayList<>();
+
     private RecyclerView recyclerViewServices;
     private SelectedServiceAdapter selectedServiceAdapter;
+    public static List<Service> selectedServiceList = new ArrayList<>();
+
+    public static List<CarInfo> carInfoList;
+    public static CarInfoSpinnerAdapter carInfoSpinnerAdapter;
+
+    public static User customer;
     private DatabaseReference mDatabase;
 
     private Spinner spinner;
     private List<String> emptyList;
 
-    private List<CarInfo> carInfoList;
 
     private CarInfoDAOImpl carInfoDAO;
 
-    public static User customer;
+
+    private CarInfo carInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,15 +79,36 @@ public class PaymentActivity extends AppCompatActivity {
         carInfoDAO = new CarInfoDAOImpl();
         MaterialButton btnAddService = findViewById(R.id.btnAddService);
         MaterialButton btnAddCarInfo = findViewById(R.id.btnAddCarInfo);
+        MaterialButton btnPayment = findViewById(R.id.btnPayment);
+        RadioButton rb_banking = findViewById(R.id.rb_banking);
+        RadioGroup rg_payment = findViewById(R.id.rg_payment);
         TextInputEditText editText = findViewById(R.id.textView8);
         TextInputEditText editText1 = findViewById(R.id.textView16);
         TextInputEditText editText2 = findViewById(R.id.textView18);
 
-        
+        btnPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (rb_banking.getId() == rg_payment.getCheckedRadioButtonId()) {
+                    int totalPrice = 0;
+
+                    for (Service service : selectedServiceList) {
+                        // Assuming each CarInfo object has a getPrice() method to get its price
+                        totalPrice += service.getPrice();
+                    }
+
+                    Receipt receipt = new Receipt(carInfo.getId(), customer.getId(), "credit_card", totalPrice, selectedServiceList.size());
+
+                }
+            }
+        });
+
         btnAddCarInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AddCarInfoDialog addCarInfoDialog = new AddCarInfoDialog();
+                // Show the dialog
+                addCarInfoDialog.show(getSupportFragmentManager(), "AddCarInfoDialog");
             }
         });
 
@@ -109,6 +140,7 @@ public class PaymentActivity extends AppCompatActivity {
                                 editText1.setText(user.getName());
                                 editText2.setText(String.valueOf(user.getPoint()));
                                 customer = user;
+                                customer.setId(userID);
                             }
                         } else {
                             Toast.makeText(PaymentActivity.this, "User not found", Toast.LENGTH_SHORT).show();
@@ -151,15 +183,16 @@ public class PaymentActivity extends AppCompatActivity {
                     if (!carInfoList.isEmpty()) {
 
                         // Thiết lập Adapter cho Spinner với danh sách xe
-                        CarInfoSpinnerAdapter adapter = new CarInfoSpinnerAdapter(PaymentActivity.this, android.R.layout.simple_spinner_item, carInfoList);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner.setAdapter(adapter);
+                        carInfoSpinnerAdapter = new CarInfoSpinnerAdapter(PaymentActivity.this, android.R.layout.simple_spinner_item, carInfoList);
+                        carInfoSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(carInfoSpinnerAdapter);
 
                         // Xử lý sự kiện khi người dùng chọn một bản ghi từ Spinner
                         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 // Hiển thị dữ liệu của bản ghi được chọn trong LinearLayout
+                                carInfo = carInfoList.get(position);
                                 showSelectedCarInfo(carInfoList.get(position));
                             }
 

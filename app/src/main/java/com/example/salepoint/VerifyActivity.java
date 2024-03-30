@@ -1,5 +1,6 @@
 package com.example.salepoint;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -40,10 +41,13 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class VerifyActivity extends AppCompatActivity {
 
+    public FirebaseUser currentUser;
     private Button btnGetOTP;
     private EditText number1;
     private EditText number2;
@@ -90,8 +94,7 @@ public class VerifyActivity extends AppCompatActivity {
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                            FirebaseUser currentUser = mAuth.getCurrentUser();
-
+                            currentUser = mAuth.getCurrentUser();
                             if (currentUser != null) {
                                 String userUid = currentUser.getUid();
                                 // Sử dụng userUid như một UUID trong hệ thống của bạn
@@ -128,8 +131,16 @@ public class VerifyActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onClick(View view) {
                                                     String Password = txtPassword.getText().toString();
+                                                    // Khởi tạo định dạng cho thời gian
+                                                    @SuppressLint("SimpleDateFormat")
+                                                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                                                    // Lấy thời gian hiện tại
+                                                    Date currentTime = new Date();
+                                                    // Biến đổi thời gian thành chuỗi theo định dạng đã định
+                                                    String formattedTime = dateFormat.format(currentTime);
+
                                                     // Người dùng không tồn tại
-                                                    User newUser = new User(phoneNumber, phoneNumber, Password);
+                                                    User newUser = new User(phoneNumber, phoneNumber, Password,"","", formattedTime, formattedTime);
                                                     usersRef.child(userUid).setValue(newUser);
 
                                                     // Tạo mã QR code từ chuỗi JSON

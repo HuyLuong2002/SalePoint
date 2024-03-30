@@ -13,9 +13,9 @@ import retrofit2.http.Path;
 
 public interface ICafInfoDAO {
 
-    @GET("car_infos")
-    Call<CarInfoResponse> getCarInfo();
-
     @GET("{user_id}/my_car_info")
     Call<CarInfoResponse> getCarsOfUser(@Path("user_id") String userId);
+
+    @POST("car_info/new")
+    Call<Void> createCarInfo(@Body CarInfo carInfo);
 }
