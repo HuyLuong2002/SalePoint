@@ -52,8 +52,10 @@ public class AddServiceDialog extends AppCompatDialogFragment {
                 .setTitle(R.string.servide_dialog_title)
                 .setPositiveButton(R.string.dialog_confirm, (dialogInterface, i) -> {
 
-                    Intent intent = new Intent(view.getContext(), PaymentActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(view.getContext(), PaymentActivity.class);
+//                    startActivity(intent);
+
+                    PaymentActivity.selectedServiceAdapter.notifyDataSetChanged();
                 })
                 .setNegativeButton(R.string.dialog_cancel, (dialogInterface, i) -> {
                     if(PaymentActivity.selectedServiceList.isEmpty())
@@ -62,8 +64,9 @@ public class AddServiceDialog extends AppCompatDialogFragment {
                     }
 
                     dialogInterface.cancel();
-                    Intent intent = new Intent(view.getContext(), PaymentActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(view.getContext(), PaymentActivity.class);
+//                    startActivity(intent);
+                    PaymentActivity.selectedServiceAdapter.notifyDataSetChanged();
                 });
 
         return builder.create();

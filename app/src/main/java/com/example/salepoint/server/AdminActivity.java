@@ -66,6 +66,7 @@ public class AdminActivity extends AppCompatActivity implements LifecycleObserve
             } else {
                 Intent intent = new Intent(AdminActivity.this, PaymentActivity.class);
                 intent.putExtra("userID", result.getContents());
+
                 startActivity(intent);
             }
         } else {

@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ICafInfoDAO {
@@ -18,4 +19,8 @@ public interface ICafInfoDAO {
 
     @POST("car_info/new")
     Call<Void> createCarInfo(@Body CarInfo carInfo);
+
+    @PUT("car_info/{id}")
+    Call<Void> updateCarInfo(@Path("id") String carInfoId, @Body CarInfo updatedCarInfo);
+
 }
