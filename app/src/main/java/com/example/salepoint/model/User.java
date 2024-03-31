@@ -5,26 +5,21 @@ public class User {
     private String Phone;
     private String Name;
     private String Password;
-
     private int Point;
-
     private boolean isStaff;
-
     private String Link;
-
     private String Gender;
     private String DateBirth;
-
+    private String Email;
     private boolean isActive;
-
     private String Created;
     private String Modified;
-
+    private String Address;
 
     public User() {
     }
 
-    public User(String phone, String name, String password, String gender, String dateBirth, String created, String modified) {
+    public User(String phone, String name, String password, String gender, String dateBirth, String created, String modified, String email, String address) {
         Phone = phone;
         Name = name;
         Password = password;
@@ -36,6 +31,23 @@ public class User {
         Point = 0;
         Link = "";
         isActive = true;
+        Email = email;
+        Address = address;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
     }
 
     public String getPhone() {

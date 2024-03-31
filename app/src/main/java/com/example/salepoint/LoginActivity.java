@@ -115,42 +115,46 @@ public class LoginActivity extends AppCompatActivity {
                     phoneNumber_Password = "+84" + phoneNumber.substring(1);
                 }
 
-                // Truy cập Firebase Realtime Database để kiểm tra thông tin đăng nhập
-                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
-                usersRef.orderByChild("phone").equalTo(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                                User user = userSnapshot.getValue(User.class);
-                                if (user != null && user.getPassword().equals(password)) {
-                                    String userId = userSnapshot.getKey();
-                                    // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    intent.putExtra("userId", userId);
-                                    intent.putExtra("mobile", phoneNumber);
-                                    System.out.println("Phone Number: " + phoneNumber_Password);
-                                    intent.putExtra("action", "login");
-                                    startActivity(intent);
-                                    finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
-                                    return;
+                if(password != null && !password.isEmpty()) {
+                    // Truy cập Firebase Realtime Database để kiểm tra thông tin đăng nhập
+                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+                    usersRef.orderByChild("phone").equalTo(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                    User user = userSnapshot.getValue(User.class);
+                                    if (user != null && user.getPassword().equals(password)) {
+                                        String userId = userSnapshot.getKey();
+                                        // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.putExtra("userId", userId);
+                                        intent.putExtra("mobile", phoneNumber);
+                                        //System.out.println("Phone Number: " + phoneNumber_Password);
+                                        intent.putExtra("action", "login");
+                                        startActivity(intent);
+                                        finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
+                                        return;
+                                    }
                                 }
+                                // Nếu password không chính xác
+                                Toast.makeText(LoginActivity.this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Nếu không tìm thấy số điện thoại trong database
+                                System.out.println("SĐT: " + phoneNumber_Password);
+                                Toast.makeText(LoginActivity.this, "Số điện thoại không tồn tại", Toast.LENGTH_SHORT).show();
                             }
-                            // Nếu password không chính xác
-                            Toast.makeText(LoginActivity.this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Nếu không tìm thấy số điện thoại trong database
-                            System.out.println("SĐT: " + phoneNumber_Password);
-                            Toast.makeText(LoginActivity.this, "Số điện thoại không tồn tại", Toast.LENGTH_SHORT).show();
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Xử lý khi có lỗi xảy ra
-                        Toast.makeText(LoginActivity.this, "Lỗi: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // Xử lý khi có lỗi xảy ra
+                            Toast.makeText(LoginActivity.this, "Lỗi: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(LoginActivity.this, "Password không được để rỗng!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

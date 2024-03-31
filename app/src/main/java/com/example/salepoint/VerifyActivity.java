@@ -59,7 +59,6 @@ public class VerifyActivity extends AppCompatActivity {
     private Button btnLogin;
     private LinearLayout initialLayout;
     private LinearLayout passwordLayout;
-    private int flag = 0;
 
 
     @Override
@@ -105,17 +104,16 @@ public class VerifyActivity extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()) {
-                                            flag = 1;
                                             // Người dùng đã tồn tại, xử lý theo cách bạn muốn
                                             String userId = dataSnapshot.getKey();
                                             boolean isStaff = dataSnapshot.child("isStaff").getValue(Boolean.class);
+                                            System.out.println("IsStaff: " + isStaff);
                                             if (isStaff) {
                                                 // Người dùng là admin
                                                 Intent intentAdmin = new Intent(VerifyActivity.this, AdminActivity.class);
                                                 startActivity(intentAdmin);
                                             } else {
                                                 // Người dùng không phải là admin
-
                                                 Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
                                                 intentHome.putExtra("mobile", phoneNumber);
                                                 intentHome.putExtra("userId", userId);
@@ -127,6 +125,8 @@ public class VerifyActivity extends AppCompatActivity {
                                             initialLayout.setVisibility(View.GONE);
                                             // Hiển thị layout nhập password
                                             passwordLayout.setVisibility(View.VISIBLE);
+                                            Toast.makeText(VerifyActivity.this, "Nhập OTP thành công!", Toast.LENGTH_SHORT).show();
+
                                             btnLogin.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View view) {
@@ -140,7 +140,7 @@ public class VerifyActivity extends AppCompatActivity {
                                                     String formattedTime = dateFormat.format(currentTime);
 
                                                     // Người dùng không tồn tại
-                                                    User newUser = new User(phoneNumber, phoneNumber, Password,"","", formattedTime, formattedTime);
+                                                    User newUser = new User(phoneNumber, phoneNumber, Password, "", "", formattedTime, formattedTime, "", "");
                                                     usersRef.child(userUid).setValue(newUser);
 
                                                     // Tạo mã QR code từ chuỗi JSON
@@ -165,12 +165,14 @@ public class VerifyActivity extends AppCompatActivity {
                                                                             String imageUrl = uri.toString();
                                                                             updateImageUrlForUser(userUid, imageUrl);
                                                                             Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
+                                                                            intentHome.putExtra("mobile", phoneNumber);
+                                                                            intentHome.putExtra("userId", userUid);
                                                                             intentHome.putExtra("action", "login");
                                                                             startActivity(intentHome);
                                                                         }
                                                                     });
                                                                 } else {
-                                                                    //Update không thành công
+                                                                    Toast.makeText(VerifyActivity.this, "Sửa ảnh không thành công!", Toast.LENGTH_SHORT).show();
                                                                 }
                                                             }
                                                         });
@@ -179,8 +181,10 @@ public class VerifyActivity extends AppCompatActivity {
                                                         e.printStackTrace();
                                                     }
                                                     Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+
                                                 }
                                             });
+
                                         }
                                     }
 
@@ -189,11 +193,6 @@ public class VerifyActivity extends AppCompatActivity {
                                         System.out.println("Database error: " + error.getMessage());
                                     }
                                 });
-                                if (flag == 1) {
-                                    Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(VerifyActivity.this, "Nhập OTP thành công!", Toast.LENGTH_SHORT).show();
-                                }
                             } else {
                                 // Người dùng chưa đăng nhập
                             }
@@ -202,7 +201,6 @@ public class VerifyActivity extends AppCompatActivity {
                         }
                     }
                 });
-                flag = 0;
             }
         });
     }
