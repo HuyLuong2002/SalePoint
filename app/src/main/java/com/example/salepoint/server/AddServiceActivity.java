@@ -63,13 +63,12 @@ public class AddServiceActivity extends AppCompatActivity {
                 btnEditService.setVisibility(View.VISIBLE);
                 rb_active.setClickable(true);
                 rb_inactive.setClickable(true);
-                radioGroup.setActivated(true);
                 btnEditService.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String serviceName = String.valueOf(edtServiceName.getText());
                         int servicePrice = Integer.parseInt(String.valueOf(edtServicePrice.getText()));
-                        boolean active = true;
+                        boolean active;
                         int radioButtonId = radioGroup.getCheckedRadioButtonId();
                         if(rb_active.getId() == radioButtonId)
                         {
@@ -83,9 +82,9 @@ public class AddServiceActivity extends AppCompatActivity {
                     }
                 });
                 if (active) {
-                    rb_active.setActivated(true);
+                    rb_active.setChecked(true);
                 } else {
-                    rb_inactive.setActivated(false);
+                    rb_inactive.setChecked(true);
                 }
 
                 break;

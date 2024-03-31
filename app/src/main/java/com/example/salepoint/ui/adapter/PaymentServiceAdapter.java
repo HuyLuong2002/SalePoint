@@ -16,7 +16,7 @@ import com.example.salepoint.util.Utils;
 
 import java.util.List;
 
-public class PaymentServiceAdapter extends RecyclerView.Adapter<PaymentServiceAdapter.ServiceViewHolder> {
+public class PaymentServiceAdapter extends RecyclerView.Adapter<PaymentServiceAdapter.PaymentServiceViewHolder> {
     private List<Service> serviceList;
 
     public PaymentServiceAdapter(List<Service> serviceList) {
@@ -25,13 +25,13 @@ public class PaymentServiceAdapter extends RecyclerView.Adapter<PaymentServiceAd
 
     @NonNull
     @Override
-    public ServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PaymentServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_service_dialog_listview_item, parent, false);
-        return new ServiceViewHolder(view);
+        return new PaymentServiceViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ServiceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PaymentServiceViewHolder holder, int position) {
         Service service = serviceList.get(position);
         holder.bind(service);
 
@@ -66,13 +66,13 @@ public class PaymentServiceAdapter extends RecyclerView.Adapter<PaymentServiceAd
         this.serviceList = serviceList;
     }
 
-    public class ServiceViewHolder extends RecyclerView.ViewHolder {
+    public class PaymentServiceViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textViewServiceName;
         private TextView textViewServicePrice;
         private CheckBox checkBox;
 
-        public ServiceViewHolder(@NonNull View itemView) {
+        public PaymentServiceViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewServiceName = itemView.findViewById(R.id.textView28);
             textViewServicePrice = itemView.findViewById(R.id.textView29);

@@ -23,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 public class EditUserActivity extends AppCompatActivity {
 
     private TextInputEditText edtUserName;
-    private TextInputEditText edtUserPhone;
 
     private RadioButton rb_male;
     private RadioButton rb_female;
@@ -41,7 +40,6 @@ public class EditUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_management_add);
 
         edtUserName = findViewById(R.id.edtUserName);
-        edtUserPhone = findViewById(R.id.edtUserPhone);
         rdg_gender = findViewById(R.id.rdg_gender);
         rb_male = findViewById(R.id.rb_male);
         rb_female = findViewById(R.id.rb_female);
@@ -52,7 +50,6 @@ public class EditUserActivity extends AppCompatActivity {
         btnEditService = findViewById(R.id.btnEditService);
 
         Intent intent = getIntent();
-        String userPhone = intent.getStringExtra("userPhone");
         String userName = intent.getStringExtra("userName");
         String userGender = intent.getStringExtra("userGender");
         String userDateBirth = intent.getStringExtra("userDateBirth");
@@ -61,7 +58,6 @@ public class EditUserActivity extends AppCompatActivity {
         String userId = intent.getStringExtra("userId");
 
         edtUserName.setText(userName);
-        edtUserPhone.setText(userPhone);
         edtUserDateBirth.setText(userDateBirth);
 
         if(userGender.equals("Nam"))
@@ -84,7 +80,6 @@ public class EditUserActivity extends AppCompatActivity {
         btnEditService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = edtUserPhone.getText().toString();
                 String name = edtUserName.getText().toString();
                 String dateBirth = edtUserDateBirth.getText().toString();
                 String gender = "";
@@ -102,20 +97,21 @@ public class EditUserActivity extends AppCompatActivity {
                 }
                 else active = false;
                 // Gọi hàm sửa thông tin người dùng
-                updateUser(userId, name, phone, dateBirth, gender, active);
+                updateUser(userId, name, dateBirth, gender, active);
 
             }
         });
 
+
+
     }
 
-    private void updateUser(String userId, String name, String phone, String dateBirth, String gender, boolean active) {
+    private void updateUser(String userId, String name, String dateBirth, String gender, boolean active) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
         databaseReference.child("name").setValue(name);
         databaseReference.child("dateBirth").setValue(dateBirth);
         databaseReference.child("gender").setValue(gender);
-        databaseReference.child("isActive").setValue(active);
-        databaseReference.child("phone").setValue(phone)
+        databaseReference.child("isActive").setValue(active)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

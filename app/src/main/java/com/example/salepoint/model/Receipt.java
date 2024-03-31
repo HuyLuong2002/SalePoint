@@ -1,5 +1,7 @@
 package com.example.salepoint.model;
 
+import java.util.List;
+
 public class Receipt {
 
     private String id;
@@ -10,6 +12,10 @@ public class Receipt {
     private String paymentMethod;
     private int totalPrice;
     private int totalQuantity;
+
+    private int exchange_points;
+
+    private List<DetailReceipt> detailReceipt;
 
     private boolean isActive;
 
@@ -98,5 +104,21 @@ public class Receipt {
 
     public void setModified(String modified) {
         this.modified = modified;
+    }
+
+    public int getExchange_points() {
+        return exchange_points;
+    }
+
+    public void setExchange_points(int exchange_points) {
+        this.exchange_points = exchange_points;
+    }
+
+    public List<DetailReceipt> getDetailReceipt() {
+        return detailReceipt;
+    }
+
+    public void setDetailReceipt(List<DetailReceipt> detailReceipt) {
+        this.detailReceipt = detailReceipt;
     }
 }

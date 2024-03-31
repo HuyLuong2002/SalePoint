@@ -4,6 +4,7 @@ import com.example.salepoint.RetrofitClient;
 import com.example.salepoint.dao.ICafInfoDAO;
 import com.example.salepoint.dao.IServiceDAO;
 import com.example.salepoint.model.CarInfo;
+import com.example.salepoint.model.Service;
 import com.example.salepoint.response.CarInfoResponse;
 import com.example.salepoint.response.ServiceResponse;
 
@@ -27,4 +28,10 @@ public class CarInfoDAOImpl implements ICafInfoDAO {
     public Call<Void> createCarInfo(CarInfo carInfo) {
         return apiService.createCarInfo(carInfo);
     }
+
+    @Override
+    public Call<Void> updateCarInfo(String carInfoId, CarInfo updatedCarInfo) {
+        return apiService.updateCarInfo(carInfoId, updatedCarInfo);
+    }
+
 }

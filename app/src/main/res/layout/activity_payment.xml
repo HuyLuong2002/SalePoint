@@ -7,27 +7,27 @@
 
     <TextView
         android:id="@+id/textView42"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="THANH TOÁN DICH VỤ"
         android:textAlignment="center"
+        android:textColor="@color/yellowPrimaryDark"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/yellowPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_height="680dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/textView42">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,8 +43,8 @@
                 android:layout_marginBottom="10dp"
                 android:text="THÔNG TIN KHÁCH HÀNG"
                 android:textAlignment="center"
-                android:textSize="18sp"
                 android:textColor="@color/black"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -68,8 +68,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:enabled="false"
-                    android:textColor="@color/black"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
 
@@ -135,14 +135,15 @@
                 android:layout_marginBottom="10dp"
                 android:text="THÔNG TIN XE"
                 android:textAlignment="center"
-                android:textSize="18sp"
                 android:textColor="@color/black"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <Spinner
                     android:id="@+id/spinner1"
                     android:layout_width="match_parent"
@@ -189,8 +190,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:enabled="false"
-                        android:textColor="@color/black"
                         android:inputType="text"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
 
@@ -218,8 +219,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:enabled="false"
-                        android:textColor="@color/black"
                         android:inputType="text"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
 
@@ -246,8 +247,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:enabled="false"
-                        android:textColor="@color/black"
                         android:inputType="numberDecimal"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -273,8 +274,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:enabled="false"
-                        android:textColor="@color/black"
                         android:inputType="text|numberDecimal"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -299,9 +300,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:enabled="false"
-                        android:textColor="@color/black"
                         android:inputType="numberDecimal"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -326,9 +326,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:enabled="false"
-                        android:textColor="@color/black"
                         android:inputType="numberDecimal"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -364,10 +363,17 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView43"
@@ -384,23 +390,72 @@
                 android:id="@+id/rg_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:checkedButton="@+id/rb_banking">
+                android:checkedButton="@+id/rb_banking"
+                android:orientation="horizontal">
+
                 <RadioButton
                     android:id="@+id/rb_banking"
-                    android:text="Chuyển khoản"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    />
+                    android:text="Chuyển khoản" />
 
                 <RadioButton
                     android:id="@+id/rb_cast"
-                    android:text="Tiền mặt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"/>
+                    android:layout_marginStart="10dp"
+                    android:text="Tiền mặt" />
 
             </RadioGroup>
+
+            <TextView
+                android:id="@+id/textView46"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Có muốn quy đổi điểm không?"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rg_exchange_point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/rb_not_change"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Có" />
+
+                <RadioButton
+                    android:id="@+id/rb_not_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Không" />
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nhập điểm cần quy đổi"
+                app:hintTextColor="@color/black"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textView47"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:background="@color/white"
+                    android:textSize="16sp"
+                    android:visibility="gone"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnPayment"
