@@ -1,13 +1,18 @@
 package com.example.salepoint.ui.home
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.salepoint.R
 import com.example.salepoint.databinding.FragmentHomeBinding
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 
 class HomeFragment : Fragment() {
 
@@ -32,6 +37,8 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+
         return root
     }
 
@@ -39,4 +46,5 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+    
 }

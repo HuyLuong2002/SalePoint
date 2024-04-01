@@ -37,6 +37,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2637447663698202~1174023783"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="false"
