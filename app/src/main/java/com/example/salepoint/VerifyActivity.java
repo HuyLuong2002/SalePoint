@@ -107,7 +107,6 @@ public class VerifyActivity extends AppCompatActivity {
                                             // Người dùng đã tồn tại, xử lý theo cách bạn muốn
                                             String userId = dataSnapshot.getKey();
                                             boolean isStaff = dataSnapshot.child("isStaff").getValue(Boolean.class);
-                                            System.out.println("IsStaff: " + isStaff);
                                             if (isStaff) {
                                                 // Người dùng là admin
                                                 Intent intentAdmin = new Intent(VerifyActivity.this, AdminActivity.class);

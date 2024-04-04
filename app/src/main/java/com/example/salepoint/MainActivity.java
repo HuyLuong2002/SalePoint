@@ -4,18 +4,27 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.example.salepoint.model.User;
 import com.example.salepoint.util.Utils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.Nullable;
@@ -46,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText EmailProfile;
     private EditText DOBProfile;
     private EditText AddressProfile;
+
+    private AdView adView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userId");
         String phone = intent.getStringExtra("mobile");
@@ -86,28 +104,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        loadBanner();
+
     }
 
-    public void getUserDataFromLogin()
-    {
-        // Lấy thông tin người dùng hiện tại
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User đã đăng nhập, bạn có thể lấy thông tin của user từ đây
-            String uid = user.getUid();
-            String phoneNumber = user.getPhoneNumber(); // Lấy số điện thoại của người dùng
-            String ConvertPhoneNumber = Utils.convertToZeroStartPhoneNumber(phoneNumber);
-            System.out.println("Phone Number: " + phoneNumber);
-            System.out.println("Convert phone: " + ConvertPhoneNumber);
+    private void loadBanner() {
 
-            // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
-            Log.d(TAG, "User ID: " + uid);
-            Log.d(TAG, "Phone Number: " + phoneNumber);
-        } else {
-            // User chưa đăng nhập
-            Log.d(TAG, "User is not logged in");
-        }
+        // Create a new ad view.
+        adView = findViewById(R.id.adView);
+
+        // Start loading the ad in the background.
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+
+        adView.loadAd(adRequest);
     }
+
 
     private void getUserDataFromFirebase(String uid, String phone) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
@@ -136,10 +148,6 @@ public class MainActivity extends AppCompatActivity {
                         PhoneNumber.setText(phone);
                         Point.setText(String.valueOf(point));
                         Picasso.get().load(link).into(Qrcode);
-
-                        // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
-                        Log.d(TAG, "User ID: " + uid);
-                        Log.d(TAG, "Phone Number: " + phone);
 
                         // Xử lý thông tin người dùng theo nhu cầu của bạn
                     }

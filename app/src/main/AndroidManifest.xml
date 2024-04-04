@@ -35,14 +35,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SalePoint"
         android:usesCleartextTraffic="true"
-        tools:targetApi="tiramisu">
+        tools:targetApi="tiramisu"
+        android:hardwareAccelerated="true">
+
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-2637447663698202~1174023783"/>
 
+        <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            android:resource="@xml/gma_ad_services_config"
+            tools:replace="android:resource" />
+
         <activity
             android:name=".MainActivity"
+            android:hardwareAccelerated="true"
             android:exported="false"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.SalePoint_Home" />
@@ -80,6 +88,12 @@
         </activity>
         <activity
             android:name=".server.EditUserActivity"
+            android:exported="true"
+            android:label="User Activity"
+            android:theme="@style/Theme.SalePoint">
+        </activity>
+        <activity
+            android:name=".server.SalePointActivity"
             android:exported="true"
             android:label="User Activity"
             android:theme="@style/Theme.SalePoint">

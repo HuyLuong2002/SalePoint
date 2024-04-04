@@ -54,7 +54,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         return serviceList.size();
     }
 
-    public static class ServiceViewHolder extends RecyclerView.ViewHolder {
+    public class ServiceViewHolder extends RecyclerView.ViewHolder {
 
         private ServiceDAOImpl         // Khởi tạo ServiceDAOImpl
                 serviceDAO = new ServiceDAOImpl();
@@ -139,7 +139,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
                         // Cập nhật dịch vụ thành công
                         // Cập nhật giao diện người dùng nếu cần
                         refreshServiceData();
-
                         System.out.println("Delete succes");
 
                     } else {
@@ -166,7 +165,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
                         // Cập nhật dữ liệu trong RecyclerView
                         serviceList.clear();
                         serviceList.addAll(newServiceList);
-                        ServiceActivity.serviceAdapter.notifyDataSetChanged();
+                        notifyDataSetChanged();
                         System.out.println("Data refreshed successfully");
                     } else {
                         System.out.println("Failed to refresh data");

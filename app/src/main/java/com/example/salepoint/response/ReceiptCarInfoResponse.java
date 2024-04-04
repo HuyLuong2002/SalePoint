@@ -1,14 +1,12 @@
 package com.example.salepoint.response;
 
 import com.example.salepoint.model.CarInfo;
-import com.example.salepoint.model.Receipt;
 
 import java.util.List;
 
-public class ReceiptResponse {
-
+public class ReceiptCarInfoResponse {
     private boolean success;
-    private List<Receipt> Receipt;
+    private List<CarInfo> CarInfo;
 
     public boolean isSuccess() {
         return success;
@@ -18,11 +16,11 @@ public class ReceiptResponse {
         this.success = success;
     }
 
-    public List<Receipt> getReceiptList() {
-        return Receipt;
+    public List<CarInfo> getCarInfos() {
+        return CarInfo;
     }
 
-    public void setReceiptList(List<Receipt> receiptList) {
-        this.Receipt = receiptList;
+    public void setInfo(List<CarInfo> services) {
+        this.CarInfo = services;
     }
 }
