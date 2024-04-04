@@ -102,5 +102,11 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Để sử dụng GsonConverter
+<<<<<<< HEAD
     implementation("com.github.bumptech.glide:glide:4.16.0")
+=======
+    implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("com.google.android.gms:play-services-ads:23.0.0")
+
+>>>>>>> 1e6beef8acc86afee71cdf584ab0df29afec7d84
 }
