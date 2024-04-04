@@ -213,6 +213,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="sans-serif"
             android:text=""
+            android:maxLength="15"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -254,6 +255,7 @@
             android:layout_marginTop="35dp"
             android:textColor="@color/black"
             android:text="0"
+
             android:textSize="15sp"
             android:textStyle="bold" />
 

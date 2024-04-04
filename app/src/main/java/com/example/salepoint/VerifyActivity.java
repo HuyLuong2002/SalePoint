@@ -17,10 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.salepoint.model.User;
 import com.example.salepoint.server.AdminActivity;
+import com.example.salepoint.util.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,7 +57,7 @@ public class VerifyActivity extends AppCompatActivity {
     private EditText number4;
     private EditText number5;
     private EditText number6;
-    private EditText txtPassword;
+    private TextInputEditText txtPassword;
     private Button btnLogin;
     private LinearLayout initialLayout;
     private LinearLayout passwordLayout;
@@ -117,7 +119,7 @@ public class VerifyActivity extends AppCompatActivity {
                                                 Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
                                                 intentHome.putExtra("mobile", phoneNumber);
                                                 intentHome.putExtra("userId", userId);
-                                                intentHome.putExtra("action", "login");
+                                                intentHome.putExtra("action", "loginWithPhone");
                                                 startActivity(intentHome);
                                             }
                                         } else {
@@ -146,7 +148,7 @@ public class VerifyActivity extends AppCompatActivity {
                                                     // Tạo mã QR code từ chuỗi JSON
                                                     Bitmap bitmap = null;
                                                     try {
-                                                        bitmap = encodeAsBitmap(userUid);
+                                                        bitmap = Utils.encodeAsBitmap(userUid);
                                                         String fileName = userUid + ".jpg";
                                                         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
                                                         StorageReference imageRef = storageRef.child("qr_code/" + fileName);
@@ -167,7 +169,7 @@ public class VerifyActivity extends AppCompatActivity {
                                                                             Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
                                                                             intentHome.putExtra("mobile", phoneNumber);
                                                                             intentHome.putExtra("userId", userUid);
-                                                                            intentHome.putExtra("action", "login");
+                                                                            intentHome.putExtra("action", "loginWithPhone");
                                                                             startActivity(intentHome);
                                                                         }
                                                                     });
@@ -181,7 +183,6 @@ public class VerifyActivity extends AppCompatActivity {
                                                         e.printStackTrace();
                                                     }
                                                     Toast.makeText(VerifyActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-
                                                 }
                                             });
 
@@ -203,27 +204,6 @@ public class VerifyActivity extends AppCompatActivity {
                 });
             }
         });
-    }
-
-    private Bitmap encodeAsBitmap(String data) throws WriterException {
-        BitMatrix result;
-        try {
-            result = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 500, 500, null);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-        int width = result.getWidth();
-        int height = result.getHeight();
-        int[] pixels = new int[width * height];
-        for (int y = 0; y < height; y++) {
-            int offset = y * width;
-            for (int x = 0; x < width; x++) {
-                pixels[offset + x] = result.get(x, y) ? 0xFF000000 : 0xFFFFFFFF;
-            }
-        }
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-        return bitmap;
     }
 
     private void updateImageUrlForUser(String phoneNumber, String imageUrl) {

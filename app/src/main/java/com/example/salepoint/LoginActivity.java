@@ -1,6 +1,9 @@
 package com.example.salepoint;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +25,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,21 +41,29 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.google.zxing.WriterException;
 
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient googleSignInClient;
-    private EditText edtPhoneNumber;
+    private TextInputEditText edtPhoneNumber;
     private Button btnSendCode;
     private Button btnloginWithPasswordButton;
     private TextView txtLoginWithPassword;
     private TextView txtLoginOTP;
     private LinearLayout LayoutLoginWithOTPCode;
     private LinearLayout LayoutLoginWithPassword;
-    private EditText edtPhoneNumber_Password;
-    private EditText edtPassword;
+    private TextInputEditText edtPhoneNumber_Password;
+    private TextInputEditText edtPassword;
     private String phoneNumber_Password;
 
     @Override
@@ -115,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                     phoneNumber_Password = "+84" + phoneNumber.substring(1);
                 }
 
-                if(password != null && !password.isEmpty()) {
+                if (password != null && !password.isEmpty()) {
                     // Truy cập Firebase Realtime Database để kiểm tra thông tin đăng nhập
                     DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
                     usersRef.orderByChild("phone").equalTo(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -131,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra("userId", userId);
                                         intent.putExtra("mobile", phoneNumber);
                                         //System.out.println("Phone Number: " + phoneNumber_Password);
-                                        intent.putExtra("action", "login");
+                                        intent.putExtra("action", "loginWithPhone");
                                         startActivity(intent);
                                         finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
                                         return;
@@ -162,13 +176,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String phoneNumber = edtPhoneNumber.getText().toString();
-                // Kiểm tra kết nối Internet khi Activity được tạo
-                if (Utils.checkInternetConnection(getApplicationContext())) {
-                    sendVerificationCode(phoneNumber);
+                if (phoneNumber != null && !phoneNumber.isEmpty()) {
+                    // Kiểm tra kết nối Internet khi Activity được tạo
+                    if (Utils.checkInternetConnection(getApplicationContext())) {
+                        sendVerificationCode(phoneNumber);
+                    } else {
+                        //Xuất ra màn hình
+                    }
                 } else {
-                    //Xuất ra màn hình
+                    Toast.makeText(LoginActivity.this, "Chưa nhập số điện thoại!", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
@@ -195,7 +212,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 // Mã đã được gửi, chuyển người dùng đến màn hình nhập mã và xác thực
-
                 Intent intent = new Intent(LoginActivity.this, VerifyActivity.class);
                 intent.putExtra("verificationId", s);
                 intent.putExtra("mobile", edtPhoneNumber.getText().toString());
@@ -229,17 +245,97 @@ public class LoginActivity extends AppCompatActivity {
         try {
             GoogleSignInAccount account = task.getResult();
             if (task.isSuccessful() && account != null) {
+
+                String email = account.getEmail();
+                String userId = account.getId();
+
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task signInTask) {
                         if (signInTask.isSuccessful()) {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                            finish(); // Finish the current activity
+                            // Truy cập Firebase Realtime Database để kiểm tra thông tin đăng nhập
+                            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+                            usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        User user = dataSnapshot.getValue(User.class);
+                                        if (user != null) {
+                                            String userId = dataSnapshot.getKey();
+                                            // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.putExtra("userId", userId);
+                                            intent.putExtra("mobile", email);
+                                            intent.putExtra("action", "loginWithPhone");
+                                            startActivity(intent);
+                                            finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
+                                            return;
+                                        }
+                                    } else {
+                                        @SuppressLint("SimpleDateFormat")
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                                        // Lấy thời gian hiện tại
+                                        Date currentTime = new Date();
+                                        // Biến đổi thời gian thành chuỗi theo định dạng đã định
+                                        String formattedTime = dateFormat.format(currentTime);
+
+                                        // Tạo một người dùng mới với email và userId từ Google
+                                        User newUser = new User("", email, "", "", "", formattedTime, formattedTime, email, "");
+                                        newUser.setId(userId);
+
+                                        // Lưu người dùng mới vào Firebase Realtime Database
+                                        usersRef.child(userId).setValue(newUser);
+
+                                        // Tạo mã QR code từ chuỗi JSON
+                                        Bitmap bitmap = null;
+                                        try {
+                                            bitmap = Utils.encodeAsBitmap(userId);
+                                            String fileName = userId + ".jpg";
+                                            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                                            StorageReference imageRef = storageRef.child("qr_code/" + fileName);
+                                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                            byte[] data = baos.toByteArray();
+                                            UploadTask uploadTask = imageRef.putBytes(data);
+
+                                            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                            @Override
+                                                            public void onSuccess(Uri uri) {
+                                                                String imageUrl = uri.toString();
+                                                                updateImageUrlForUser(userId, imageUrl);
+                                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                                intent.putExtra("userId", userId);
+                                                                intent.putExtra("email", email);
+                                                                intent.putExtra("action", "loginWithEmail");
+                                                                Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                                                startActivity(intent);
+                                                            }
+                                                        });
+                                                    } else {
+                                                        Toast.makeText(LoginActivity.this, "Sửa ảnh không thành công!", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+
+                                        } catch (WriterException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    // Xử lý khi có lỗi xảy ra
+                                    Toast.makeText(LoginActivity.this, "Lỗi: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         } else {
-                            Toast.makeText(LoginActivity.this, "Login Failed: " + signInTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(LoginActivity.this, "Login Failed: " + signInTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -249,6 +345,32 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateImageUrlForUser(String phoneNumber, String imageUrl) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("users");
+
+        // Tạo một HashMap để cập nhật thông tin hình ảnh
+        HashMap<String, Object> update = new HashMap<>();
+        update.put("link", imageUrl);
+
+        // Cập nhật thông tin hình ảnh của người dùng
+        usersRef.child(phoneNumber).updateChildren(update)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Cập nhật thành công
+                        // Toast.makeText(LoginActivity.this, "Cập nhật hình ảnh thành công", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Xử lý lỗi khi cập nhật không thành công
+                        Toast.makeText(LoginActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }

@@ -75,10 +75,10 @@
         android:drawableRight="@drawable/ic_edit"
         android:ems="10"
         android:inputType="text"
-
         android:paddingLeft="20dp"
-        android:text="Nguyễn Tự Lực"
+        android:text=""
         android:textSize="15sp"
+        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,13 +105,11 @@
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="20dp"
-        android:text="1041 Trần Xuân Soạn"
+        android:enabled="false"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-
 
     <TextView
         android:id="@+id/textView21"
@@ -131,9 +129,9 @@
         android:background="@drawable/edit_text_bg"
         android:drawableRight="@drawable/ic_edit"
         android:ems="10"
-        android:inputType="date"
+        android:inputType="text"
         android:paddingLeft="20dp"
-        android:text="01/01/1970"
+        android:enabled="false"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -160,7 +158,7 @@
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="20dp"
-        android:text="Nhập email"
+        android:enabled="false"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -205,7 +203,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextName" />
 
     <Button
-        android:id="@+id/btnUpdateInfor"
+        android:id="@+id/btnUpdateInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -214,6 +212,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextAddress" />
+
+    <Button
+        android:id="@+id/btnLogOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="Log Out"
+        android:textSize="10dp"
+        android:backgroundTint="#00B4D8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toEndOf="@+id/textView25"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
