@@ -41,6 +41,7 @@ import com.example.salepoint.ui.dialog.AddCarInfoDialog;
 import com.example.salepoint.ui.dialog.AddServiceDialog;
 import com.example.salepoint.util.Utils;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -79,13 +80,9 @@ public class PaymentActivity extends AppCompatActivity {
 
     private CarInfo carInfo;
 
-    private TextInputEditText editText2;
+    private TextInputEditText editText2, editText3, editText4, editText5;
 
-    private TextInputEditText editText3;
-
-    private TextInputEditText editText4;
-    private TextInputEditText editText5;
-
+    private CircularProgressIndicator circularProgressIndicator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,20 +100,20 @@ public class PaymentActivity extends AppCompatActivity {
         RadioButton rb_cast = findViewById(R.id.rb_cast);
         RadioButton rb_change = findViewById(R.id.rb_change);
         RadioButton rb_not_change = findViewById(R.id.rb_not_change);
-
         RadioGroup rg_payment = findViewById(R.id.rg_payment);
         RadioGroup rg_exchange_point = findViewById(R.id.rg_exchange_point);
-
         TextInputEditText editText = findViewById(R.id.textView8);
         TextInputEditText editText1 = findViewById(R.id.textView16);
+
         editText2 = findViewById(R.id.textView18);
         editText3 = findViewById(R.id.textView47);
         editText4 = findViewById(R.id.textView39);
         editText5 = findViewById(R.id.textView41);
+        circularProgressIndicator = findViewById(R.id.progressBar);
 
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userID");
-
+        circularProgressIndicator.setVisibility(View.VISIBLE);
         getPointByUserId(userID);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
@@ -240,7 +237,7 @@ public class PaymentActivity extends AppCompatActivity {
         emptyList = new ArrayList<>();
         getDataUserCarInfo(userID);
 
-
+        circularProgressIndicator.setVisibility(View.GONE);
     }
 
     // Phương thức để kiểm tra nếu danh sách dịch vụ rỗng

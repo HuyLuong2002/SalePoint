@@ -24,6 +24,7 @@ import com.example.salepoint.response.PointListResponse;
 import com.example.salepoint.response.PointResponse;
 import com.example.salepoint.ui.adapter.UserAdapter;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,7 +46,7 @@ public class UserActivity extends AppCompatActivity {
     private List<User> userList;
     private List<Point> pointList;
     private ReceiptDAOImpl receiptDAO = new ReceiptDAOImpl();
-    private ProgressBar progressBar;
+    private CircularProgressIndicator circularProgressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,10 +54,10 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_management_list);
 
         recyclerView = findViewById(R.id.recyclerView);
-        progressBar = findViewById(R.id.progressBar);
+        circularProgressBar = findViewById(R.id.progressBar);
         userList = new ArrayList<>();
 
-        progressBar.setVisibility(View.VISIBLE);
+        circularProgressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         getAllPoint();
 
@@ -69,6 +70,8 @@ public class UserActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(userAdapter);
 
+        circularProgressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     private void readUserDataFromDatabase() {
@@ -97,8 +100,7 @@ public class UserActivity extends AppCompatActivity {
                     }
                 }
                 userAdapter.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
+
             }
 
             @Override

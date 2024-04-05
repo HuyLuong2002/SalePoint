@@ -1,6 +1,8 @@
 package com.example.salepoint.model;
 
-public class DetailReceipt {
+import java.io.Serializable;
+
+public class DetailReceipt implements Serializable {
     private String item;
     private int price;
     private int quantity;

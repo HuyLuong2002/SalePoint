@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.salepoint.R;
@@ -128,6 +130,14 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
             nameTextView.setText(service.getName());
             priceTextView.setText(Utils.convertToVND(service.getPrice()) + " vnđ");
             isActiveTextView.setText(service.isActive() ? "Active" : "Inactive");
+            // Trong phương thức bind của ReceiptViewHolder
+            Drawable drawable;
+            if (service.isActive()) {
+                drawable = ContextCompat.getDrawable(itemView.getContext(), R.drawable.remove);
+            } else {
+                drawable = ContextCompat.getDrawable(itemView.getContext(), R.drawable.undo);
+            }
+            removeIcon.setImageDrawable(drawable);
         }
 
         public void removeService(String serviceID) {

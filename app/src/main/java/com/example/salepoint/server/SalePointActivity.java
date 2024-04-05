@@ -1,6 +1,8 @@
 package com.example.salepoint.server;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import com.example.salepoint.model.Receipt;
 import com.example.salepoint.response.ReceiptCarInfoResponse;
 import com.example.salepoint.response.ReceiptResponse;
 import com.example.salepoint.ui.adapter.ReceiptAdapter;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,7 @@ import retrofit2.Response;
 
 public class SalePointActivity extends AppCompatActivity {
 
+    private CircularProgressIndicator circularProgressBar;
     private ReceiptDAOImpl receiptDAO;
     private List<Receipt> receiptList;
 
@@ -36,14 +40,22 @@ public class SalePointActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale_point_management_list);
 
+        // Khởi tạo ProgressBar
+        circularProgressBar = findViewById(R.id.progressBar);
+
         receiptDAO = new ReceiptDAOImpl();
         receiptList = new ArrayList<>();
-        getAllReceiptForManager();
 
+        // Hiển thị ProgressBar khi bắt đầu gọi API
+        circularProgressBar.setVisibility(View.VISIBLE);
+        getAllReceiptForManager();
+        // Ẩn ProgressBar khi nhận được kết quả từ API
+        circularProgressBar.setVisibility(View.GONE);
 
     }
 
     private void getAllReceiptForManager() {
+
         // Sử dụng ServiceDAOImpl để gọi API
         Call<ReceiptResponse> call = receiptDAO.getAllReceiptForManager();
         call.enqueue(new Callback<ReceiptResponse>() {
@@ -63,6 +75,7 @@ public class SalePointActivity extends AppCompatActivity {
                     recyclerView.setAdapter(adapter);
 
                 } else {
+
                     // Handle error
                     System.out.println("failed");
                 }
@@ -70,6 +83,8 @@ public class SalePointActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ReceiptResponse> call, Throwable t) {
+                // Ẩn ProgressBar khi gặp lỗi
+                circularProgressBar.setVisibility(View.GONE);
                 // Handle failure
                 System.out.println(t.getMessage());
             }

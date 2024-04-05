@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -160,6 +161,15 @@
                     android:text="Thêm mới (nếu chưa có)"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Đang tải..."
+                    android:indeterminate="true"
+                    android:layout_gravity="center"
+                    app:showDelay="3000" />
             </LinearLayout>
 
 

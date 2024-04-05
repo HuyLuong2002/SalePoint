@@ -1,8 +1,9 @@
 package com.example.salepoint.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Receipt {
+public class Receipt implements Serializable {
 
     private String id;
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,7 +139,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             int colorRed = ContextCompat.getColor(itemView.getContext(), R.color.red);
             int colorGreen = ContextCompat.getColor(itemView.getContext(), R.color.green);
             textView10.setTextColor(user.getIsActive() ? colorGreen : colorRed);
-
+            // Trong phương thức bind của ReceiptViewHolder
+            Drawable drawable;
+            if(user.getIsActive()) {
+                drawable = ContextCompat.getDrawable(itemView.getContext(), R.drawable.remove);
+            } else {
+                drawable = ContextCompat.getDrawable(itemView.getContext(), R.drawable.undo);
+            }
+            imageViewRemoveIcon.setImageDrawable(drawable);
         }
     }
 }

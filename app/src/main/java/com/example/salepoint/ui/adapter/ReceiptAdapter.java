@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,23 +14,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.salepoint.R;
 import com.example.salepoint.dao.impl.ReceiptDAOImpl;
-import com.example.salepoint.dao.impl.ServiceDAOImpl;
 import com.example.salepoint.model.Receipt;
-import com.example.salepoint.model.Service;
-import com.example.salepoint.model.User;
 import com.example.salepoint.response.ReceiptResponse;
-import com.example.salepoint.response.ServiceResponse;
-import com.example.salepoint.server.ServiceActivity;
+import com.example.salepoint.server.ViewSalePointActivity;
 import com.example.salepoint.util.Utils;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,6 +70,9 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
         public TextView textView30;
         public ImageView removeIcon;
 
+        public ImageView viewMoreIcon;
+
+
         private ReceiptDAOImpl         // Khởi tạo ReceiptDAOImpl
                 receiptDAO = new ReceiptDAOImpl();
 
@@ -89,6 +88,19 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
             textView3 = itemView.findViewById(R.id.textView3);
             textView30 = itemView.findViewById(R.id.textView30);
             removeIcon = itemView.findViewById(R.id.removeIcon);
+            viewMoreIcon = itemView.findViewById(R.id.viewMoreIcon);
+
+            viewMoreIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Lấy đối tượng Receipt tương ứng với vị trí hiện tại
+                    Receipt selectedReceipt = mReceiptList.get(getAdapterPosition());
+                    Intent intent = new Intent(itemView.getContext(), ViewSalePointActivity.class);
+                    // Gửi thông tin về hóa đơn qua intent
+                    intent.putExtra("selected_receipt", selectedReceipt);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
 
             removeIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -181,6 +193,16 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
             textView1.setText(Utils.convertToVND(receipt.getTotalPrice()) + " vnđ");
             textView3.setText(String.valueOf(receipt.getTotalQuantity()));
             textView30.setText(receipt.isActive() ? "Active" : "Inactive");
+            // Trong phương thức bind của ReceiptViewHolder
+            Drawable drawable;
+            if (receipt.isActive()) {
+                drawable = ContextCompat.getDrawable(itemView.getContext(), R.drawable.remove);
+            } else {
+                drawable = ContextCompat.getDrawable(itemView.getContext(), R.drawable.undo);
+            }
+            removeIcon.setImageDrawable(drawable);
+
+
         }
 
 
