@@ -1,10 +1,8 @@
 package com.example.salepoint.server;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,14 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.salepoint.R;
-import com.example.salepoint.VerifyActivity;
 import com.example.salepoint.dao.impl.ReceiptDAOImpl;
 import com.example.salepoint.model.Point;
 import com.example.salepoint.model.User;
 import com.example.salepoint.response.PointListResponse;
-import com.example.salepoint.response.PointResponse;
 import com.example.salepoint.ui.adapter.UserAdapter;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -70,8 +65,7 @@ public class UserActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(userAdapter);
 
-        circularProgressBar.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+
     }
 
     private void readUserDataFromDatabase() {
@@ -100,7 +94,8 @@ public class UserActivity extends AppCompatActivity {
                     }
                 }
                 userAdapter.notifyDataSetChanged();
-
+                circularProgressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
             }
 
             @Override

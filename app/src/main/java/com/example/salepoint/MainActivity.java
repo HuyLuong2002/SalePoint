@@ -29,6 +29,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.salepoint.databinding.ActivityMainBinding;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText AddressProfile;
     private Button btnUpdateInfo;
     private Button btnLogOut;
-
+    private CircularProgressIndicator circularProgressIndicator;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,12 +80,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+
         receiptDAO = new ReceiptDAOImpl();
 
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userId");
         String phone = intent.getStringExtra("mobile");
         String action = intent.getStringExtra("action");
+
+        circularProgressIndicator = findViewById(R.id.progressBar);
 
         // Lắng nghe sự kiện khi điều hướng đến trang navigation_profile
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
@@ -94,7 +98,9 @@ public class MainActivity extends AppCompatActivity {
             } else if (destination.getId() == R.id.navigation_home) {
                 if (action.equalsIgnoreCase("loginWithPhone") && userID != null) {
 //                    getPointByUserId(userID);
+                    circularProgressIndicator.setVisibility(View.VISIBLE);
                     getUserDataFromFirebase(userID, phone);
+
                 } else if (action.equalsIgnoreCase("loginWithEmail") && userID != null) {
                     String email = intent.getStringExtra("loginWithEmail");
                     getUserDataFromFirebase(userID, email);
@@ -158,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "Phone Number: " + phone);
 
                         // Xử lý thông tin người dùng theo nhu cầu của bạn
+                        circularProgressIndicator.setVisibility(View.GONE);
                     }
                 } else {
                     // Không tìm thấy dữ liệu cho số điện thoại đã cho
