@@ -72,6 +72,7 @@ dependencies {
     implementation("androidx.activity:activity:1.8.0")
     implementation("androidx.annotation:annotation:1.6.0")
     implementation("com.google.firebase:firebase-firestore:24.10.3")
+    implementation("com.google.android.gms:play-services-ads-lite:23.0.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

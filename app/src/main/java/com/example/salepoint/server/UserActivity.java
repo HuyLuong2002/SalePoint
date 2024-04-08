@@ -100,7 +100,6 @@ public class UserActivity extends AppCompatActivity {
                     }
                 }
                 userAdapter.notifyDataSetChanged();
-
             }
 
             @Override

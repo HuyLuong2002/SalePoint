@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.salepoint.model.User;
+import com.example.salepoint.server.AdminActivity;
 import com.example.salepoint.util.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthCredential;
@@ -64,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     private LinearLayout LayoutLoginWithPassword;
     private TextInputEditText edtPhoneNumber_Password;
     private TextInputEditText edtPassword;
-    private String phoneNumber_Password;
+    private CircularProgressIndicator circularProgressIndicator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +89,8 @@ public class LoginActivity extends AppCompatActivity {
         edtPhoneNumber_Password = findViewById(R.id.phoneNumberLoginWithPassword);
         edtPassword = findViewById(R.id.passwordEditText);
 
+//        circularProgressIndicator = findViewById(R.id.progressBarLogin);
+
         ImageView imagebtnLoginGg = findViewById(R.id.imagebtnLoginGg);
         imagebtnLoginGg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +101,6 @@ public class LoginActivity extends AppCompatActivity {
                         .build();
 
                 googleSignInClient = GoogleSignIn.getClient(view.getContext(), gso);
-
                 googleSignIn();
             }
         });
@@ -117,17 +120,14 @@ public class LoginActivity extends AppCompatActivity {
                 LayoutLoginWithPassword.setVisibility(View.GONE);
             }
         });
+
         btnloginWithPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 String phoneNumber = edtPhoneNumber_Password.getText().toString();
                 String password = edtPassword.getText().toString();
-
-                // Kiểm tra xem số điện thoại đã bắt đầu bằng "0" hay không
-                if (phoneNumber.startsWith("0")) {
-                    // Nếu bắt đầu bằng "0", thêm "+84" vào đầu số điện thoại và loại bỏ số "0" ở đầu
-                    phoneNumber_Password = "+84" + phoneNumber.substring(1);
-                }
 
                 if (password != null && !password.isEmpty()) {
                     // Truy cập Firebase Realtime Database để kiểm tra thông tin đăng nhập
@@ -139,23 +139,33 @@ public class LoginActivity extends AppCompatActivity {
                                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                                     User user = userSnapshot.getValue(User.class);
                                     if (user != null && user.getPassword().equals(password)) {
-                                        String userId = userSnapshot.getKey();
-                                        // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        intent.putExtra("userId", userId);
-                                        intent.putExtra("mobile", phoneNumber);
-                                        //System.out.println("Phone Number: " + phoneNumber_Password);
-                                        intent.putExtra("action", "loginWithPhone");
-                                        startActivity(intent);
-                                        finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
-                                        return;
+                                        boolean isStaff = user.getIsStaff();
+                                        if (isStaff) {
+                                            // Người dùng là admin
+                                            Intent intentAdmin = new Intent(LoginActivity.this, AdminActivity.class);
+                                            startActivity(intentAdmin);
+                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            // Người dùng không phải là admin
+                                            String userId = userSnapshot.getKey();
+                                            // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.putExtra("userId", userId);
+                                            intent.putExtra("mobile", phoneNumber);
+                                            //System.out.println("Phone Number: " + phoneNumber_Password);
+                                            intent.putExtra("action", "loginWithPhone");
+                                            startActivity(intent);
+                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                            finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
+                                            return;
+                                        }
+                                    } else {
+                                        // Nếu password không chính xác
+                                        Toast.makeText(LoginActivity.this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                                // Nếu password không chính xác
-                                Toast.makeText(LoginActivity.this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();
                             } else {
                                 // Nếu không tìm thấy số điện thoại trong database
-                                System.out.println("SĐT: " + phoneNumber_Password);
                                 Toast.makeText(LoginActivity.this, "Số điện thoại không tồn tại", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -169,6 +179,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(LoginActivity.this, "Password không được để rỗng!", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
