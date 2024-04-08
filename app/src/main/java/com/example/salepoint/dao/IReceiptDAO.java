@@ -22,12 +22,12 @@ public interface IReceiptDAO {
     @GET("points")
     Call<PointListResponse> getAllPoints();
 
-    @GET("admin/receipt")
+    @GET("admin/receipts")
     Call<ReceiptResponse> getAllReceiptForManager();
 
-    @POST("receipt/new")
+    @POST("receipts/new")
     Call<Void> createReceipt(@Body Receipt receipt);
 
-    @DELETE("receipt/{id}")
+    @DELETE("receipts/{id}")
     Call<Void> removeReceipt(@Path("id") String serviceId);
 }

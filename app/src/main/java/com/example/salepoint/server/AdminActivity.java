@@ -23,6 +23,15 @@ public class AdminActivity extends AppCompatActivity implements LifecycleObserve
         CardView serviceCardView = findViewById(R.id.serviceCardView);
         CardView userCardView = findViewById(R.id.userCard);
         CardView salePointCardView = findViewById(R.id.salePointCardView);
+        CardView statisticalCardView = findViewById(R.id.statisticalCardView);
+
+        statisticalCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, StatisticalActivity.class);
+                startActivity(intent);
+            }
+        });
 
         salePointCardView.setOnClickListener(new View.OnClickListener() {
             @Override

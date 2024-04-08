@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- CardView để hiển thị tổng doanh thu -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng doanh thu:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/totalRevenue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="value"
+                android:textSize="18sp"
+                android:layout_marginStart="150dp"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Tiêu đề của bảng -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tổng doanh thu theo tháng"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center"/>
+
+
+        <!-- Biểu đồ cột thứ nhất -->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_chart1"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="16dp" />
+
+        <!-- Tiêu đề của bảng -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Top 5 Khách hàng có điểm cao nhất"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center"/>
+
+        <!-- TableLayout để hiển thị top 5 khách hàng -->
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp">
+
+            <!-- Header của bảng -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_border">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="STT"
+                    android:textStyle="bold"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên khách hàng"
+                    android:textStyle="bold"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Điểm"
+                    android:textStyle="bold"
+                    android:padding="8dp"
+                    android:gravity="center" />
+            </TableRow>
+
+            <!-- Dòng 1 -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_border">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/customer1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/point1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:gravity="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_border">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/customer2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/point2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:gravity="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_border">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/customer3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/point3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:gravity="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_border">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/customer4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/point4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:gravity="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_border">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/customer5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/point5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:gravity="center" />
+            </TableRow>
+
+            <!-- Dòng 2 -->
+            <!-- Tương tự, thêm các TableRow khác để hiển thị thông tin của các khách hàng khác -->
+
+        </TableLayout>
+
+    </LinearLayout>
+</ScrollView>

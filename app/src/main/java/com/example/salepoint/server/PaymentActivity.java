@@ -7,7 +7,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -24,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.salepoint.R;
 import com.example.salepoint.dao.impl.CarInfoDAOImpl;
 import com.example.salepoint.dao.impl.ReceiptDAOImpl;
-import com.example.salepoint.dao.impl.ServiceDAOImpl;
 import com.example.salepoint.model.CarInfo;
 import com.example.salepoint.model.DetailReceipt;
 import com.example.salepoint.model.Point;
@@ -33,18 +31,13 @@ import com.example.salepoint.model.Service;
 import com.example.salepoint.model.User;
 import com.example.salepoint.response.CarInfoResponse;
 import com.example.salepoint.response.PointResponse;
-import com.example.salepoint.response.ServiceResponse;
 import com.example.salepoint.ui.adapter.CarInfoSpinnerAdapter;
 import com.example.salepoint.ui.adapter.SelectedServiceAdapter;
-import com.example.salepoint.ui.adapter.ServiceAdapter;
 import com.example.salepoint.ui.dialog.AddCarInfoDialog;
 import com.example.salepoint.ui.dialog.AddServiceDialog;
-import com.example.salepoint.util.Utils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -170,6 +163,8 @@ public class PaymentActivity extends AppCompatActivity {
                         CarInfo updatedCarInfo = carInfo;
                         updatedCarInfo.setSpeedometer(Integer.parseInt(editText4.getText().toString()));
                         updatedCarInfo.setNumber_of_oil_changes(Integer.parseInt(editText5.getText().toString()));
+                        updatedCarInfo.setCreatedAt(null);
+                        updatedCarInfo.setModified(null);
                         updateCarInfo(carInfo.getId(), updatedCarInfo);
                     }
 
@@ -237,7 +232,7 @@ public class PaymentActivity extends AppCompatActivity {
         emptyList = new ArrayList<>();
         getDataUserCarInfo(userID);
 
-        circularProgressIndicator.setVisibility(View.GONE);
+
     }
 
     // Phương thức để kiểm tra nếu danh sách dịch vụ rỗng
@@ -301,7 +296,12 @@ public class PaymentActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     PointResponse pointResponse = response.body();
                     Point point = pointResponse.getPointData();
-                    editText2.setText(String.valueOf(point.getPoint()));
+
+                    if(!String.valueOf(point.getPoint()).isEmpty())
+                    {
+                        editText2.setText(String.valueOf(point.getPoint()));
+                    }
+
                 } else {
                     // Handle error
                     System.out.println("failed");
@@ -389,6 +389,7 @@ public class PaymentActivity extends AppCompatActivity {
                             }
                         });
                     }
+                    circularProgressIndicator.setVisibility(View.GONE);
                 } else {
                     // Xử lý khi có lỗi từ phía server
                     System.out.println("goi fail");

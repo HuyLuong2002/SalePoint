@@ -83,12 +83,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+
         receiptDAO = new ReceiptDAOImpl();
 
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userId");
         String phone = intent.getStringExtra("mobile");
         String action = intent.getStringExtra("action");
+
+        circularProgressIndicator = findViewById(R.id.progressBar);
 
         // Lắng nghe sự kiện khi điều hướng đến trang navigation_profile
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
                     System.out.println("Screen: " + destination.getId());
 
+                    circularProgressIndicator.setVisibility(View.VISIBLE);
                 } else if (action.equalsIgnoreCase("loginWithEmail") && userID != null) {
                     String email = intent.getStringExtra("loginWithEmail");
                     getUserDataFromFirebase(userID, email);
@@ -172,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                         circularProgressIndicator.setVisibility(View.GONE);
 
                         // Xử lý thông tin người dùng theo nhu cầu của bạn
+                        circularProgressIndicator.setVisibility(View.GONE);
                     }
                 } else {
                     // Không tìm thấy dữ liệu cho số điện thoại đã cho

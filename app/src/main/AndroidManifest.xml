@@ -99,6 +99,12 @@
             android:theme="@style/Theme.SalePoint">
         </activity>
         <activity
+            android:name=".server.StatisticalActivity"
+            android:exported="true"
+            android:label="User Activity"
+            android:theme="@style/Theme.SalePoint">
+        </activity>
+        <activity
             android:name=".server.ViewSalePointActivity"
             android:exported="true"
             android:label="User Activity"
