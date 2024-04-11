@@ -2,8 +2,10 @@ package com.example.salepoint;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,10 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import com.example.salepoint.dao.NotificationApi;
 import com.example.salepoint.model.User;
 import com.example.salepoint.util.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -41,22 +47,38 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 import com.google.zxing.WriterException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class LoginActivity extends AppCompatActivity {
+
+
     private FirebaseAuth mAuth;
     private GoogleSignInClient googleSignInClient;
     private TextInputEditText edtPhoneNumber;
-    private Button btnSendCode;
+    private Button btnSendCode, btnSendNotification;
     private Button btnloginWithPasswordButton;
     private TextView txtLoginWithPassword;
     private TextView txtLoginOTP;
@@ -77,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
         btnSendCode = findViewById(R.id.sendCodeButton);
         btnloginWithPasswordButton = findViewById(R.id.btnLoginPassword);
+        btnSendNotification = findViewById(R.id.sendNotification);
 
         txtLoginWithPassword = findViewById(R.id.TextViewLoginPassword);
         txtLoginOTP = findViewById(R.id.LoginOTPText);
@@ -88,6 +111,9 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.passwordEditText);
 
         ImageView imagebtnLoginGg = findViewById(R.id.imagebtnLoginGg);
+
+
+
         imagebtnLoginGg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,6 +215,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void sendVerificationCode(String phoneNumber) {
         PhoneAuthOptions.Builder builder = PhoneAuthOptions.newBuilder(mAuth);
@@ -372,5 +399,4 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

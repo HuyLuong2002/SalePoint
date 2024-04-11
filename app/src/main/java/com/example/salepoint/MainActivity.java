@@ -12,15 +12,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.example.salepoint.dao.NotificationApi;
 import com.example.salepoint.dao.impl.ReceiptDAOImpl;
 import com.example.salepoint.model.Point;
 import com.example.salepoint.model.User;
 import com.example.salepoint.response.PointResponse;
 import com.example.salepoint.util.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -32,19 +37,23 @@ import com.example.salepoint.databinding.ActivityMainBinding;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.bumptech.glide.Glide;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-
+    private String SERVER_TOKEN;
     private ActivityMainBinding binding;
     private ReceiptDAOImpl receiptDAO;
     private TextView NameUser;
@@ -57,8 +66,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText DOBProfile;
     private EditText AddressProfile;
     private Button btnUpdateInfo;
-    private Button btnLogOut;
+    private Button btnLogOut, btnSendNotification;
     private CircularProgressIndicator circularProgressIndicator;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         String action = intent.getStringExtra("action");
 
         circularProgressIndicator = findViewById(R.id.progressBar);
+        btnSendNotification = findViewById(R.id.sendNotification);
 
         // Lắng nghe sự kiện khi điều hướng đến trang navigation_profile
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
@@ -100,6 +111,26 @@ public class MainActivity extends AppCompatActivity {
 //                    getPointByUserId(userID);
                     circularProgressIndicator.setVisibility(View.VISIBLE);
                     getUserDataFromFirebase(userID, phone);
+
+                    btnSendNotification.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+// Lấy token của thiết bị để gửi thông báo
+                            FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+                            FirebaseMessaging.getInstance().getToken()
+                                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<String> task) {
+                                            if (task.isSuccessful() && task.getResult() != null) {
+                                                String deviceToken = task.getResult();
+                                                System.out.println(deviceToken);
+                                            }
+                                        }
+                                    });
+
+
+                        }
+                    });
 
                 } else if (action.equalsIgnoreCase("loginWithEmail") && userID != null) {
                     String email = intent.getStringExtra("loginWithEmail");
@@ -310,4 +341,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    
+
 }
