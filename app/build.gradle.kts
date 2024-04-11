@@ -107,4 +107,7 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.google.android.gms:play-services-ads:23.0.0")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    implementation("com.stripe:stripe-android:20.40.3")
+    implementation("com.stripe:stripe-java:24.0.0")
 }

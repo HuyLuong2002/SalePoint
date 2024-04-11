@@ -94,11 +94,8 @@ public class UserActivity extends AppCompatActivity {
                     }
                 }
                 userAdapter.notifyDataSetChanged();
-<<<<<<< HEAD
-=======
                 circularProgressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
->>>>>>> 67e61b2bc64094e0f076c271985f3477b1ffb553
             }
 
             @Override
