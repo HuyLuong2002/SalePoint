@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText DOBProfile;
     private EditText AddressProfile;
     private Button btnUpdateInfo;
-    private Button btnLogOut, btnSendNotification;
+    private Button btnLogOut;
     private CircularProgressIndicator circularProgressIndicator;
 
     @Override
@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         BottomNavigationView navView = binding.navView;
+
+        circularProgressIndicator = findViewById(R.id.progressBarHome);
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         // Passing each menu ID as a set of Ids because each
@@ -99,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         String action = intent.getStringExtra("action");
 
         circularProgressIndicator = findViewById(R.id.progressBar);
-        btnSendNotification = findViewById(R.id.sendNotification);
 
         // Lắng nghe sự kiện khi điều hướng đến trang navigation_profile
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
@@ -108,30 +109,10 @@ public class MainActivity extends AppCompatActivity {
                 setProfileData(userID, phone);
             } else if (destination.getId() == R.id.navigation_home) {
                 if (action.equalsIgnoreCase("loginWithPhone") && userID != null) {
-//                    getPointByUserId(userID);
-                    circularProgressIndicator.setVisibility(View.VISIBLE);
+
                     getUserDataFromFirebase(userID, phone);
-
-                    btnSendNotification.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-// Lấy token của thiết bị để gửi thông báo
-                            FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-                            FirebaseMessaging.getInstance().getToken()
-                                    .addOnCompleteListener(new OnCompleteListener<String>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<String> task) {
-                                            if (task.isSuccessful() && task.getResult() != null) {
-                                                String deviceToken = task.getResult();
-                                                System.out.println(deviceToken);
-                                            }
-                                        }
-                                    });
-
-
-                        }
-                    });
-
+                    
+                    //circularProgressIndicator.setVisibility(View.VISIBLE);
                 } else if (action.equalsIgnoreCase("loginWithEmail") && userID != null) {
                     String email = intent.getStringExtra("loginWithEmail");
                     getUserDataFromFirebase(userID, email);
@@ -153,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Convert phone: " + ConvertPhoneNumber);
 
             // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
-            Log.d(TAG, "User ID: " + uid);
+            Log.d(TAG, "User ID home: " + uid);
             Log.d(TAG, "Phone Number: " + phoneNumber);
         } else {
             // User chưa đăng nhập
@@ -167,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                circularProgressIndicator.setVisibility(View.VISIBLE);
+
                 if (dataSnapshot.exists()) {
                     // Dữ liệu của người dùng tồn tại
                     // Lấy thông tin của người dùng từ dataSnapshot
@@ -187,12 +171,16 @@ public class MainActivity extends AppCompatActivity {
                         NameUser.setText(name);
                         PhoneNumber.setText(phone);
 //                        Point.setText(String.valueOf(point));
+                        circularProgressIndicator.setVisibility(View.INVISIBLE);
+
                         getPointByUserId(uid);
                         Glide.with(MainActivity.this).load(link).into(Qrcode);
 
                         // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
-                        Log.d(TAG, "User ID: " + uid);
+                        Log.d(TAG, "User ID home: " + uid);
                         Log.d(TAG, "Phone Number: " + phone);
+
+                        circularProgressIndicator.setVisibility(View.GONE);
 
                         // Xử lý thông tin người dùng theo nhu cầu của bạn
                         circularProgressIndicator.setVisibility(View.GONE);
@@ -297,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                         // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
-                        Log.d(TAG, "User ID: " + uid);
+                        Log.d(TAG, "User ID profile: " + uid);
                         Log.d(TAG, "Phone Number: " + phone);
 
                         // Xử lý thông tin người dùng theo nhu cầu của bạn
@@ -341,6 +329,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
 
 }

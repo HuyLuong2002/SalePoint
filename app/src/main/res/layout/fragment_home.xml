@@ -8,18 +8,17 @@
     tools:context=".ui.home.HomeFragment">
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBarHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:contentDescription="Đang tải..."
         android:indeterminate="true"
-        android:visibility="gone"
-        app:indicatorSize="40dp"
-        app:minHideDelay="3000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:showDelay="3000" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -333,37 +332,24 @@
 
     </RelativeLayout>
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/linearLayout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="240dp"-->
-<!--        android:gravity="center_horizontal"-->
-<!--        ads:layout_constraintBottom_toBottomOf="parent"-->
-<!--        ads:layout_constraintEnd_toEndOf="parent"-->
-<!--        ads:layout_constraintStart_toStartOf="parent"-->
-<!--        ads:layout_constraintTop_toTopOf="parent">-->
-<!--        &lt;!&ndash; Thêm AdView vào đây &ndash;&gt;-->
-<!--        <com.google.android.gms.ads.AdView-->
-<!--            android:id="@+id/adView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            ads:adSize="BANNER"-->
-<!--            ads:adUnitId="@string/banner_ad_unit_id" />-->
-<!--    </LinearLayout>-->
-    <Button
-        android:id="@+id/sendNotification"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
-        android:backgroundTint="@color/white"
-        android:padding="16dp"
-        android:text="Send"
-        android:textColor="#3B84F1"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="240dp"
+        android:gravity="center_horizontal"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent">
+        <!-- Thêm AdView vào đây -->
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

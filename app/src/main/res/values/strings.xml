@@ -27,4 +27,5 @@
     <string name="carinfo_dialog_title">Thêm thông tin xe</string>
 <!--    <string name="banner_ad_unit_id">ca-app-pub-2637447663698202/1270543931</string>    -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="default_notification_channel_id" translatable="false">1001</string>
 </resources>
