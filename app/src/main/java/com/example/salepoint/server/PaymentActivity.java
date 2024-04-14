@@ -81,6 +81,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private CircularProgressIndicator circularProgressIndicator;
     private String stripeApiKey;
+    private String userID = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +114,11 @@ public class PaymentActivity extends AppCompatActivity {
         circularProgressIndicator = findViewById(R.id.progressBar);
 
         Intent intent = getIntent();
-        String userID = intent.getStringExtra("userID");
+
+        if(intent != null)
+        {
+            userID = intent.getStringExtra("userID");
+        }
 
         getPointByUserId(userID);
 

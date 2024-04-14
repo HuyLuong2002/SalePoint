@@ -90,6 +90,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText edtPassword;
     private CircularProgressIndicator circularProgressIndicator;
 
+    public static User currentUser; //using when login password
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,6 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                                         if (isStaff) {
                                             // Người dùng là admin
                                             Intent intentAdmin = new Intent(LoginActivity.this, AdminActivity.class);
+                                            currentUser = user;
                                             startActivity(intentAdmin);
                                             Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                         } else {
