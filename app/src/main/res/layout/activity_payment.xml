@@ -293,7 +293,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="Nhập số km:"
                         app:boxBackgroundColor="@color/white"
@@ -306,7 +306,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textView39"
-                            android:layout_width="wrap_content"
+                            android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:inputType="numberDecimal"
@@ -331,7 +331,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="Nhập số lần thay nhớt"
                         app:boxBackgroundColor="@color/white"
@@ -345,7 +345,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textView41"
-                            android:layout_width="wrap_content"
+                            android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:inputType="numberDecimal"

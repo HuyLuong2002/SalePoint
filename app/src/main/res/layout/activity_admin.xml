@@ -224,7 +224,7 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Quản lý dịch vụ"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/serviceImage"
@@ -260,7 +260,7 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Thống kê"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/statisticalImage"
@@ -311,7 +311,7 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Thông báo"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/notificationImage"

@@ -100,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
         String phone = intent.getStringExtra("mobile");
         String action = intent.getStringExtra("action");
 
-        circularProgressIndicator = findViewById(R.id.progressBar);
-
         // Lắng nghe sự kiện khi điều hướng đến trang navigation_profile
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.navigation_profile) {

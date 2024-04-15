@@ -169,7 +169,7 @@ public class PaymentActivity extends AppCompatActivity {
                             receipt.setExchange_points(point);
                         }
                         receipt.setDetailReceipt(detailReceiptList);
-                        createReceipt(receipt, totalPrice);
+                        createReceipt(receipt, totalPrice, true);
 
                         //lấy thông tin car info mới
                         CarInfo updatedCarInfo = carInfo;
@@ -198,7 +198,7 @@ public class PaymentActivity extends AppCompatActivity {
                         }
                         receipt.setDetailReceipt(detailReceiptList);
                         circularProgressIndicator.setVisibility(View.VISIBLE);
-                        createReceipt(receipt, totalPrice);
+                        createReceipt(receipt, totalPrice, false);
 
                         //lấy thông tin car info mới
                         CarInfo updatedCarInfo = carInfo;
@@ -305,13 +305,19 @@ public class PaymentActivity extends AppCompatActivity {
         });
     }
 
-    private void createReceipt(Receipt receipt, int totalPrice) {
+    private void createReceipt(Receipt receipt, int totalPrice, boolean isCard) {
         Call<Void> call = receiptDAO.createReceipt(receipt);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    payment(totalPrice);
+                    if(isCard)
+                    {
+                        payment(totalPrice);
+                    }
+                    Intent intent = new Intent(PaymentActivity.this, AdminActivity.class);
+                    startActivity(intent);
+
                 } else {
                     // Xử lý lỗi khi thêm dịch vụ
                     System.out.println("Add failed");
