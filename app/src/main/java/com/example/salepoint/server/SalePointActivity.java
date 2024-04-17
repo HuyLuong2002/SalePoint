@@ -43,10 +43,7 @@ public class SalePointActivity extends AppCompatActivity {
         receiptDAO = new ReceiptDAOImpl();
         receiptList = new ArrayList<>();
 
-
         getAllReceiptForManager();
-
-
     }
 
     private void getAllReceiptForManager() {

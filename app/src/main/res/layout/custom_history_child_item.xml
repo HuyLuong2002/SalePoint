@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    android:padding="8dp"
+    android:id="@+id/CardHistoryChild">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="8dp"
+        android:padding="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name app"
+                android:textSize="16dp"
+                android:textColor="@color/green_cadium"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:layout_weight="1"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giao dịch thành công"
+                android:textColor="@color/green"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:background="@drawable/custom_background_history_child_item">
+
+            </com.google.android.material.textview.MaterialTextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thời gian đặt:"
+                android:textSize="14dp"
+                android:textColor="@color/dark_gray"
+                android:textStyle="bold"
+                android:padding="6dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="15dp"
+                android:id="@+id/TextViewCreateAt"
+                android:textColor="@color/dark_gray"
+                android:padding="6dp"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Điểm tích lũy:"
+                android:textSize="14dp"
+                android:textColor="@color/teal_300"
+                android:textStyle="bold"
+                android:padding="6dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+0"
+                android:textSize="18dp"
+                android:id="@+id/TextViewDiemTichLuy"
+                android:textColor="@color/green"
+                android:padding="6dp"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Điểm đã quy đổi:"
+                android:textSize="14dp"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                android:padding="6dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="18dp"
+                android:id="@+id/TextViewDiemQuyDoi"
+                android:textColor="@color/green"
+                android:padding="6dp"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -67,7 +67,6 @@ public class PaymentActivity extends AppCompatActivity {
     private Spinner spinner;
     private List<String> emptyList;
 
-
     private CarInfoDAOImpl carInfoDAO;
     private ReceiptDAOImpl receiptDAO;
 
