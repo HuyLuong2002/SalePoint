@@ -120,7 +120,6 @@ public class UserActivity extends AppCompatActivity {
                     circularProgressBar.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                 }
-
             }
 
             @Override

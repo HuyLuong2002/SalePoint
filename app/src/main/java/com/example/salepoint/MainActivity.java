@@ -6,20 +6,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.example.salepoint.dao.impl.HistoryDAOImpl;
 import android.widget.Toast;
 import android.widget.Toolbar;
-
 import com.example.salepoint.dao.NotificationApi;
 import com.example.salepoint.dao.impl.ReceiptDAOImpl;
-import com.example.salepoint.model.Point;
+import com.example.salepoint.model.History;
+import com.example.salepoint.model.Receipt;
 import com.example.salepoint.model.User;
+import com.example.salepoint.response.HistoryResponse;
 import com.example.salepoint.response.PointResponse;
+import com.example.salepoint.ui.adapter.HistoryAdapter;
 import com.example.salepoint.util.Utils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -34,6 +35,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.salepoint.databinding.ActivityMainBinding;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -46,7 +49,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.bumptech.glide.Glide;
-import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,6 +74,13 @@ public class MainActivity extends AppCompatActivity {
     private EditText AddressProfile;
     private Button btnUpdateInfo;
     private Button btnLogOut;
+    private CircularProgressIndicator circularProgressIndicator;
+    private HistoryDAOImpl historyDAO;
+    private List<History> Histories;
+    private List<Receipt> receiptList;
+    RecyclerView recyclerView;
+
+    public static HistoryAdapter adapter;
     private AdView adView;
 
     @Override
@@ -88,13 +100,14 @@ public class MainActivity extends AppCompatActivity {
 
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_profile)
+                R.id.navigation_home, R.id.navigation_history, R.id.navigation_notifications, R.id.navigation_profile)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-
         receiptDAO = new ReceiptDAOImpl();
+        historyDAO = new HistoryDAOImpl();
+        Histories = new ArrayList<>();
 
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userId");
@@ -110,12 +123,16 @@ public class MainActivity extends AppCompatActivity {
                 if (action.equalsIgnoreCase("loginWithPhone") && userID != null) {
 
                     getUserDataFromFirebase(userID, phone);
-                    
+
+                    System.out.println("Screen: " + destination.getId());
+
                     //circularProgressIndicator.setVisibility(View.VISIBLE);
                 } else if (action.equalsIgnoreCase("loginWithEmail") && userID != null) {
                     String email = intent.getStringExtra("loginWithEmail");
                     getUserDataFromFirebase(userID, email);
                 }
+            } else if (destination.getId() == R.id.navigation_history){
+                getHistoryByUserId(userID);
             }
         });
 
@@ -333,5 +350,34 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void getHistoryByUserId(String userId) {
+        Call<HistoryResponse> call = historyDAO.getHistoryByUserId(userId);
 
+        call.enqueue(new Callback<HistoryResponse>() {
+            @Override
+            public void onResponse(Call<HistoryResponse> call, Response<HistoryResponse> response) {
+                if(response.isSuccessful()) {
+                    HistoryResponse historyResponse = response.body();
+                    Histories = historyResponse.getHistories();
+                    System.out.println("List History: " + Histories);
+
+                    // Thiết lập adapter cho RecyclerView
+                    recyclerView = findViewById(R.id.RVParentHistory);
+                    adapter = new HistoryAdapter(MainActivity.this, Histories);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    recyclerView.setAdapter(adapter);
+                } else {
+
+                    // Handle error
+                    System.out.println("failed");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HistoryResponse> call, Throwable t) {
+
+            }
+        });
+    }
 }
