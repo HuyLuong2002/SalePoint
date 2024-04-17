@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.salepoint.LoginActivity;
 import com.example.salepoint.R;
 import com.example.salepoint.dao.impl.ReceiptDAOImpl;
 import com.example.salepoint.model.Point;
@@ -75,28 +76,50 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userList.clear();
+
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String userId = snapshot.getKey(); // Lấy ID của record
-                    User user = snapshot.getValue(User.class);
-                    user.setId(userId); // Lưu ID vào đối tượng User
-                    if (!user.getId().equals(currentUser.getUid())) {
-                        userList.add(user);
-                    }
+                if (currentUser == null) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String userId = snapshot.getKey(); // Lấy ID của record
+                        User user = snapshot.getValue(User.class);
+                        user.setId(userId); // Lưu ID vào đối tượng User
+                        if (!user.getId().equals(LoginActivity.currentUser.getId())) {
+                            userList.add(user);
+                        }
 
-                }
-                for (User user : userList) {
-                    for (Point point : pointList) {
-                        if (user.getId().equals(point.getCustomer())) {
-                            user.setPoint(point.getPoint());
+                    }
+                    for (User user : userList) {
+                        for (Point point : pointList) {
+                            if (user.getId().equals(point.getCustomer())) {
+                                user.setPoint(point.getPoint());
+                            }
                         }
                     }
-                }
-                userAdapter.notifyDataSetChanged();
+                    userAdapter.notifyDataSetChanged();
+                    circularProgressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String userId = snapshot.getKey(); // Lấy ID của record
+                        User user = snapshot.getValue(User.class);
+                        user.setId(userId); // Lưu ID vào đối tượng User
+                        if (!user.getId().equals(currentUser.getUid())) {
+                            userList.add(user);
+                        }
 
-                circularProgressBar.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
+                    }
+                    for (User user : userList) {
+                        for (Point point : pointList) {
+                            if (user.getId().equals(point.getCustomer())) {
+                                user.setPoint(point.getPoint());
+                            }
+                        }
+                    }
+                    userAdapter.notifyDataSetChanged();
+                    circularProgressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

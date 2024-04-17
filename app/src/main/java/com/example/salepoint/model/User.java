@@ -1,6 +1,8 @@
 package com.example.salepoint.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String Id;
     private String Phone;
     private String Name;

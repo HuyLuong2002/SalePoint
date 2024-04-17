@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.salepoint.dao.impl.HistoryDAOImpl;
+import android.widget.Toast;
+import android.widget.Toolbar;
+import com.example.salepoint.dao.NotificationApi;
 import com.example.salepoint.dao.impl.ReceiptDAOImpl;
 import com.example.salepoint.model.History;
 import com.example.salepoint.model.Receipt;
@@ -20,8 +22,13 @@ import com.example.salepoint.response.HistoryResponse;
 import com.example.salepoint.response.PointResponse;
 import com.example.salepoint.ui.adapter.HistoryAdapter;
 import com.example.salepoint.util.Utils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -35,6 +42,7 @@ import com.example.salepoint.databinding.ActivityMainBinding;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,9 +56,11 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-
+    private String SERVER_TOKEN;
     private ActivityMainBinding binding;
     private ReceiptDAOImpl receiptDAO;
     private TextView NameUser;
@@ -71,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     public static HistoryAdapter adapter;
+    private AdView adView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navView = binding.navView;
 
-        circularProgressIndicator = findViewById(R.id.progressBarHome);
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         // Passing each menu ID as a set of Ids because each
@@ -116,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
                     System.out.println("Screen: " + destination.getId());
 
+                    //circularProgressIndicator.setVisibility(View.VISIBLE);
                 } else if (action.equalsIgnoreCase("loginWithEmail") && userID != null) {
                     String email = intent.getStringExtra("loginWithEmail");
                     getUserDataFromFirebase(userID, email);
@@ -125,8 +136,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        loadBanner();
     }
 
+    private void loadBanner() {
+
+        // Create a new ad view.
+        adView = findViewById(R.id.adView);
+
+        // Start loading the ad in the background.
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+
+        adView.loadAd(adRequest);
+    }
     public void getUserDataFromLogin() {
         // Lấy thông tin người dùng hiện tại
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -153,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
 
                 if (dataSnapshot.exists()) {
                     // Dữ liệu của người dùng tồn tại
@@ -182,11 +204,6 @@ public class MainActivity extends AppCompatActivity {
                         // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
                         Log.d(TAG, "User ID home: " + uid);
                         Log.d(TAG, "Phone Number: " + phone);
-
-                        circularProgressIndicator.setVisibility(View.GONE);
-
-                        // Xử lý thông tin người dùng theo nhu cầu của bạn
-                        circularProgressIndicator.setVisibility(View.GONE);
                     }
                 } else {
                     // Không tìm thấy dữ liệu cho số điện thoại đã cho
