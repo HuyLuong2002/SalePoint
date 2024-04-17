@@ -21,6 +21,8 @@ import com.example.salepoint.model.Point;
 import com.example.salepoint.model.User;
 import com.example.salepoint.response.PointResponse;
 import com.example.salepoint.util.Utils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText AddressProfile;
     private Button btnUpdateInfo;
     private Button btnLogOut;
-    private CircularProgressIndicator circularProgressIndicator;
+    private AdView adView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navView = binding.navView;
 
-        circularProgressIndicator = findViewById(R.id.progressBarHome);
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         // Passing each menu ID as a set of Ids because each
@@ -118,8 +119,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        loadBanner();
     }
 
+    private void loadBanner() {
+
+        // Create a new ad view.
+        adView = findViewById(R.id.adView);
+
+        // Start loading the ad in the background.
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+
+        adView.loadAd(adRequest);
+    }
     public void getUserDataFromLogin() {
         // Lấy thông tin người dùng hiện tại
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -147,8 +160,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                circularProgressIndicator.setVisibility(View.VISIBLE);
-
                 if (dataSnapshot.exists()) {
                     // Dữ liệu của người dùng tồn tại
                     // Lấy thông tin của người dùng từ dataSnapshot
@@ -169,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
                         NameUser.setText(name);
                         PhoneNumber.setText(phone);
 //                        Point.setText(String.valueOf(point));
-                        circularProgressIndicator.setVisibility(View.INVISIBLE);
 
                         getPointByUserId(uid);
                         Glide.with(MainActivity.this).load(link).into(Qrcode);
@@ -177,11 +187,6 @@ public class MainActivity extends AppCompatActivity {
                         // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
                         Log.d(TAG, "User ID home: " + uid);
                         Log.d(TAG, "Phone Number: " + phone);
-
-                        circularProgressIndicator.setVisibility(View.GONE);
-
-                        // Xử lý thông tin người dùng theo nhu cầu của bạn
-                        circularProgressIndicator.setVisibility(View.GONE);
                     }
                 } else {
                     // Không tìm thấy dữ liệu cho số điện thoại đã cho
