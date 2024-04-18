@@ -1,5 +1,8 @@
 package com.example.salepoint.ui.adapter;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +12,24 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.salepoint.DetailHistoryActivity;
 import com.example.salepoint.R;
 import com.example.salepoint.model.DetailReceipt;
 import com.example.salepoint.model.History;
 import com.example.salepoint.model.Receipt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChildHistoryAdapter extends RecyclerView.Adapter<ChildHistoryAdapter.ViewHolder> {
 
     History history;
+    private Context context;
     List<Receipt> receiptList;
 
-    public ChildHistoryAdapter(History historyList) {
-        this.history = historyList;
+    public ChildHistoryAdapter(History history, Context context) {
+        this.history = history;
+        this.context = context;
     }
 
     @NonNull
@@ -33,7 +40,7 @@ public class ChildHistoryAdapter extends RecyclerView.Adapter<ChildHistoryAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 //        History history = historyList.get(position);
 
 //        receiptList = history.getReceipts();
@@ -49,6 +56,15 @@ public class ChildHistoryAdapter extends RecyclerView.Adapter<ChildHistoryAdapte
             holder.textViewDiemQuyDoi.setText("0");
         }
         holder.textViewDiemTichLuy.setText(String.valueOf("+ " + (history.getReceipts().get(position).getExchange_points() + history.getReceipts().get(position).getTotalPrice()) / 1000));
+
+        holder.CardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailHistoryActivity.class);
+                intent.putExtra("receipt", history.getReceipts().get(position));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -61,7 +77,6 @@ public class ChildHistoryAdapter extends RecyclerView.Adapter<ChildHistoryAdapte
         TextView textViewCreateAt;
         TextView textViewDiemTichLuy;
         TextView textViewDiemQuyDoi;
-
         CardView CardView;
 
         public ViewHolder(@NonNull View itemView) {

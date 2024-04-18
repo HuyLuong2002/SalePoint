@@ -39,7 +39,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
         holder.textViewDate.setText(history.getDate());
 
-        ChildHistoryAdapter childHistoryAdapter = new ChildHistoryAdapter(history);
+        ChildHistoryAdapter childHistoryAdapter = new ChildHistoryAdapter(history, context);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         holder.rcv_nested_rv.setLayoutManager(linearLayoutManager);
         holder.rcv_nested_rv.setAdapter(childHistoryAdapter);

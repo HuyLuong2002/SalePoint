@@ -166,47 +166,37 @@ public class LoginActivity extends AppCompatActivity {
                                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                                     User user = userSnapshot.getValue(User.class);
                                     if (user != null && user.getPassword().equals(password)) {
+                                        boolean isStaff = user.getIsStaff();
+                                        if (isStaff) {
+                                            // Người dùng là admin
+                                            Intent intentAdmin = new Intent(LoginActivity.this, AdminActivity.class);
+                                            currentUser = user;
+                                            startActivity(intentAdmin);
+                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        } else {
+                                            // Người dùng không phải là admin
+                                            String userId = userSnapshot.getKey();
+                                            // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.putExtra("userId", userId);
+                                            intent.putExtra("mobile", phoneNumber);
+                                            //System.out.println("Phone Number: " + phoneNumber_Password);
+                                            intent.putExtra("action", "loginWithPhone");
+                                            startActivity(intent);
+                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                            finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
+                                            return;
+                                        }
 
-                                        String userId = userSnapshot.getKey();
-                                        // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        intent.putExtra("userId", userId);
-                                        intent.putExtra("mobile", phoneNumber);
-                                        //System.out.println("Phone Number: " + phoneNumber_Password);
-                                        intent.putExtra("action", "loginWithPhone");
-                                        startActivity(intent);
-                                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                        finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
-                                        return;
-
-//                                        boolean isStaff = user.getIsStaff();
-//                                        if (isStaff) {
-//                                            // Người dùng là admin
-//                                            Intent intentAdmin = new Intent(LoginActivity.this, AdminActivity.class);
-//                                            currentUser = user;
-//                                            startActivity(intentAdmin);
-//                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//                                        } else {
-//                                            // Người dùng không phải là admin
-//                                            String userId = userSnapshot.getKey();
-//                                            // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
-//                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                                            intent.putExtra("userId", userId);
-//                                            intent.putExtra("mobile", phoneNumber);
-//                                            //System.out.println("Phone Number: " + phoneNumber_Password);
-//                                            intent.putExtra("action", "loginWithPhone");
-//                                            startActivity(intent);
-//                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//                                            finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
-//                                            return;
-//                                        }
                                     } else {
-                                        // Nếu password không chính xác
+
                                         Toast.makeText(LoginActivity.this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             } else {
                                 // Nếu không tìm thấy số điện thoại trong database
+
                                 Toast.makeText(LoginActivity.this, "Số điện thoại không tồn tại", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -236,12 +226,12 @@ public class LoginActivity extends AppCompatActivity {
                         //Xuất ra màn hình
                     }
                 } else {
+
                     Toast.makeText(LoginActivity.this, "Chưa nhập số điện thoại!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-
 
     private void sendVerificationCode(String phoneNumber) {
         PhoneAuthOptions.Builder builder = PhoneAuthOptions.newBuilder(mAuth);

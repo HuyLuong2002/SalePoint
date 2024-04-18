@@ -113,6 +113,7 @@ public class VerifyActivity extends AppCompatActivity {
                                                 // Người dùng là admin
                                                 Intent intentAdmin = new Intent(VerifyActivity.this, AdminActivity.class);
                                                 startActivity(intentAdmin);
+                                                finish();
                                             } else {
                                                 // Người dùng không phải là admin
                                                 Intent intentHome = new Intent(VerifyActivity.this, MainActivity.class);
@@ -120,6 +121,7 @@ public class VerifyActivity extends AppCompatActivity {
                                                 intentHome.putExtra("userId", userId);
                                                 intentHome.putExtra("action", "loginWithPhone");
                                                 startActivity(intentHome);
+                                                finish();
                                             }
                                         } else {
                                             // Ẩn layout ban đầu
@@ -170,6 +172,7 @@ public class VerifyActivity extends AppCompatActivity {
                                                                             intentHome.putExtra("userId", userUid);
                                                                             intentHome.putExtra("action", "loginWithPhone");
                                                                             startActivity(intentHome);
+                                                                            finish();
                                                                         }
                                                                     });
                                                                 } else {

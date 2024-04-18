@@ -61,6 +61,11 @@
             android:label="Verify Activity"
             android:theme="@style/Theme.SalePoint" />
         <activity
+            android:name=".DetailHistoryActivity"
+            android:exported="false"
+            android:label="DetailHistory Activity"
+            android:theme="@style/Theme.SalePoint" />
+        <activity
             android:name=".server.PaymentActivity"
             android:exported="false"
             android:label="Admin Activity"

@@ -24,7 +24,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name app"
+                android:text="App 3L1K"
                 android:textSize="16dp"
                 android:textColor="@color/green_cadium"
                 android:textStyle="bold"

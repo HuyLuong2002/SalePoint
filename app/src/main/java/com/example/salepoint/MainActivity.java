@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
     private CircularProgressIndicator circularProgressIndicator;
     private HistoryDAOImpl historyDAO;
     private List<History> Histories;
-    private List<Receipt> receiptList;
     RecyclerView recyclerView;
 
     public static HistoryAdapter adapter;
@@ -113,9 +112,16 @@ public class MainActivity extends AppCompatActivity {
         String userID = intent.getStringExtra("userId");
         String phone = intent.getStringExtra("mobile");
         String action = intent.getStringExtra("action");
+        String destinationIntent = intent.getStringExtra("destination");
+
+        if(destinationIntent != null && destinationIntent.equals("history")) {
+            navController.navigate(R.id.navigation_history);
+            getHistoryByUserId(userID);
+        }
 
         // Lắng nghe sự kiện khi điều hướng đến trang navigation_profile
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+
             if (destination.getId() == R.id.navigation_profile) {
                 // Ở đây bạn có thể gọi phương thức để thiết lập dữ liệu cho các EditText trong trang profile
                 setProfileData(userID, phone);
@@ -123,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
                 if (action.equalsIgnoreCase("loginWithPhone") && userID != null) {
 
                     getUserDataFromFirebase(userID, phone);
-
-                    System.out.println("Screen: " + destination.getId());
 
                     //circularProgressIndicator.setVisibility(View.VISIBLE);
                 } else if (action.equalsIgnoreCase("loginWithEmail") && userID != null) {
@@ -136,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        loadBanner();
     }
 
     private void loadBanner() {
@@ -149,25 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         adView.loadAd(adRequest);
-    }
-    public void getUserDataFromLogin() {
-        // Lấy thông tin người dùng hiện tại
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User đã đăng nhập, bạn có thể lấy thông tin của user từ đây
-            String uid = user.getUid();
-            String phoneNumber = user.getPhoneNumber(); // Lấy số điện thoại của người dùng
-            String ConvertPhoneNumber = Utils.convertToZeroStartPhoneNumber(phoneNumber);
-            System.out.println("Phone Number: " + phoneNumber);
-            System.out.println("Convert phone: " + ConvertPhoneNumber);
-
-            // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
-            Log.d(TAG, "User ID home: " + uid);
-            Log.d(TAG, "Phone Number: " + phoneNumber);
-        } else {
-            // User chưa đăng nhập
-            Log.d(TAG, "User is not logged in");
-        }
     }
 
     private void getUserDataFromFirebase(String uid, String phone) {
@@ -184,9 +168,8 @@ public class MainActivity extends AppCompatActivity {
                     if (user != null) {
                         String name = user.getName();
                         String phone = user.getPhone();
-                        boolean isStaff = user.getIsStaff();
                         String link = user.getLink();
-                        int point = user.getPoint();
+//                        String point = Utils.convertToVND(user.getPoint());
 
                         // Trang Home
                         NameUser = findViewById(R.id.textViewName);
@@ -204,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
                         // và nhiều thông tin khác tùy thuộc vào việc bạn đã cung cấp thông tin khi đăng ký tài khoản
                         Log.d(TAG, "User ID home: " + uid);
                         Log.d(TAG, "Phone Number: " + phone);
+                        loadBanner();
                     }
                 } else {
                     // Không tìm thấy dữ liệu cho số điện thoại đã cho
@@ -334,8 +318,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     PointResponse pointResponse = response.body();
                     com.example.salepoint.model.Point point = pointResponse.getPointData();
-                    Point.setText(String.valueOf(point.getPoint()));
-                    System.out.println("Point: " + point.getPoint());
+                    Point.setText(Utils.convertToVND(point.getPoint()));
                 } else {
                     // Handle error
                     System.out.println("failed");
@@ -359,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     HistoryResponse historyResponse = response.body();
                     Histories = historyResponse.getHistories();
-                    System.out.println("List History: " + Histories);
+//                    System.out.println("List History: " + Histories);
 
                     // Thiết lập adapter cho RecyclerView
                     recyclerView = findViewById(R.id.RVParentHistory);
@@ -368,7 +351,6 @@ public class MainActivity extends AppCompatActivity {
                     recyclerView.setLayoutManager(linearLayoutManager);
                     recyclerView.setAdapter(adapter);
                 } else {
-
                     // Handle error
                     System.out.println("failed");
                 }
