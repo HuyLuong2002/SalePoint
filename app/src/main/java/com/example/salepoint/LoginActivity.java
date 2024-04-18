@@ -2,28 +2,20 @@ package com.example.salepoint;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import com.example.salepoint.dao.NotificationApi;
 import com.example.salepoint.model.User;
 import com.example.salepoint.server.AdminActivity;
 import com.example.salepoint.util.Utils;
@@ -49,30 +41,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.gson.Gson;
 import com.google.zxing.WriterException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -167,39 +145,39 @@ public class LoginActivity extends AppCompatActivity {
                                     User user = userSnapshot.getValue(User.class);
                                     if (user != null && user.getPassword().equals(password)) {
 
-                                        String userId = userSnapshot.getKey();
-                                        // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        intent.putExtra("userId", userId);
-                                        intent.putExtra("mobile", phoneNumber);
-                                        //System.out.println("Phone Number: " + phoneNumber_Password);
-                                        intent.putExtra("action", "loginWithPhone");
-                                        startActivity(intent);
-                                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                        finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
-                                        return;
+//                                        String userId = userSnapshot.getKey();
+//                                        // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
+//                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                                        intent.putExtra("userId", userId);
+//                                        intent.putExtra("mobile", phoneNumber);
+//                                        //System.out.println("Phone Number: " + phoneNumber_Password);
+//                                        intent.putExtra("action", "loginWithPhone");
+//                                        startActivity(intent);
+//                                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+//                                        finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
+//                                        return;
 
-//                                        boolean isStaff = user.getIsStaff();
-//                                        if (isStaff) {
-//                                            // Người dùng là admin
-//                                            Intent intentAdmin = new Intent(LoginActivity.this, AdminActivity.class);
-//                                            currentUser = user;
-//                                            startActivity(intentAdmin);
-//                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//                                        } else {
-//                                            // Người dùng không phải là admin
-//                                            String userId = userSnapshot.getKey();
-//                                            // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
-//                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                                            intent.putExtra("userId", userId);
-//                                            intent.putExtra("mobile", phoneNumber);
-//                                            //System.out.println("Phone Number: " + phoneNumber_Password);
-//                                            intent.putExtra("action", "loginWithPhone");
-//                                            startActivity(intent);
-//                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//                                            finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
-//                                            return;
-//                                        }
+                                        boolean isStaff = user.getIsStaff();
+                                        if (isStaff) {
+                                            // Người dùng là admin
+                                            Intent intentAdmin = new Intent(LoginActivity.this, AdminActivity.class);
+                                            currentUser = user;
+                                            startActivity(intentAdmin);
+                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            // Người dùng không phải là admin
+                                            String userId = userSnapshot.getKey();
+                                            // Nếu thông tin đăng nhập chính xác, chuyển hướng người dùng đến MainActivity
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.putExtra("userId", userId);
+                                            intent.putExtra("mobile", phoneNumber);
+                                            //System.out.println("Phone Number: " + phoneNumber_Password);
+                                            intent.putExtra("action", "loginWithPhone");
+                                            startActivity(intent);
+                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                            finish(); // Đóng activity hiện tại để không quay lại nếu nhấn nút back
+                                            return;
+                                        }
                                     } else {
                                         // Nếu password không chính xác
                                         Toast.makeText(LoginActivity.this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();

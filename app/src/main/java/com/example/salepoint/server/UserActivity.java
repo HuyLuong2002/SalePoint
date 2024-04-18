@@ -3,6 +3,7 @@ package com.example.salepoint.server;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +43,7 @@ public class UserActivity extends AppCompatActivity {
     private List<User> userList;
     private List<Point> pointList;
     private ReceiptDAOImpl receiptDAO = new ReceiptDAOImpl();
-    private CircularProgressIndicator circularProgressBar;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,10 +51,10 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_management_list);
 
         recyclerView = findViewById(R.id.recyclerView);
-        circularProgressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         userList = new ArrayList<>();
 
-        circularProgressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         getAllPoint();
 
@@ -61,9 +62,9 @@ public class UserActivity extends AppCompatActivity {
         userAdapter = new UserAdapter(this, userList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Thiết lập DividerItemDecoration với màu sắc mong muốn
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_drawable));
-        recyclerView.addItemDecoration(dividerItemDecoration);
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
+//        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_drawable));
+//        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(userAdapter);
 
 
@@ -97,7 +98,7 @@ public class UserActivity extends AppCompatActivity {
                         }
                     }
                     userAdapter.notifyDataSetChanged();
-                    circularProgressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                 } else {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -117,7 +118,7 @@ public class UserActivity extends AppCompatActivity {
                         }
                     }
                     userAdapter.notifyDataSetChanged();
-                    circularProgressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                 }
             }
