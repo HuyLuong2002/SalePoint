@@ -14,6 +14,37 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:cardElevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="TextView"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogOut"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Đăng xuất"
+                android:layout_marginEnd="5dp"
+                android:layout_gravity="end"/>
+
+        </androidx.cardview.widget.CardView>
 
         <!-- CardView bao quanh khung tìm kiếm -->
 
@@ -22,7 +53,7 @@
             android:layout_width="300dp"
             android:layout_height="67dp"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="100dp"
             android:layout_marginEnd="55dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="5dp"
@@ -81,7 +112,7 @@
             android:layout_width="246dp"
             android:layout_height="55dp"
             android:layout_marginStart="18dp"
-            android:layout_marginTop="116dp"
+            android:layout_marginTop="196dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/title_dashboard"
             android:textColor="@color/yellowPrimaryDark"
@@ -94,7 +125,7 @@
             android:id="@+id/dashboardImage"
             android:layout_width="133dp"
             android:layout_height="140dp"
-            android:layout_marginTop="104dp"
+            android:layout_marginTop="180dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/dashboard"
             app:layout_constraintEnd_toEndOf="parent"

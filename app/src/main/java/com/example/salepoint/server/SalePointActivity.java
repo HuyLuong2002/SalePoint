@@ -2,6 +2,7 @@ package com.example.salepoint.server;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +27,7 @@ import retrofit2.Response;
 
 public class SalePointActivity extends AppCompatActivity {
 
-    private CircularProgressIndicator circularProgressBar;
+    private ProgressBar progressBar;
     private ReceiptDAOImpl receiptDAO;
     private List<Receipt> receiptList;
 
@@ -38,7 +39,7 @@ public class SalePointActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sale_point_management_list);
 
         // Khởi tạo ProgressBar
-        circularProgressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
         receiptDAO = new ReceiptDAOImpl();
         receiptList = new ArrayList<>();
@@ -48,7 +49,7 @@ public class SalePointActivity extends AppCompatActivity {
 
     private void getAllReceiptForManager() {
         // Hiển thị ProgressBar khi bắt đầu gọi API
-        circularProgressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         // Sử dụng ServiceDAOImpl để gọi API
         Call<ReceiptResponse> call = receiptDAO.getAllReceiptForManager();
         call.enqueue(new Callback<ReceiptResponse>() {
@@ -62,12 +63,12 @@ public class SalePointActivity extends AppCompatActivity {
                     adapter = new ReceiptAdapter(SalePointActivity.this, receiptList);
                     recyclerView.setLayoutManager(new LinearLayoutManager(SalePointActivity.this));
                     // Thiết lập DividerItemDecoration với màu sắc mong muốn
-                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(SalePointActivity.this, LinearLayoutManager.VERTICAL);
-                    dividerItemDecoration.setDrawable(ContextCompat.getDrawable(SalePointActivity.this, R.drawable.divider_drawable));
-                    recyclerView.addItemDecoration(dividerItemDecoration);
+//                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(SalePointActivity.this, LinearLayoutManager.VERTICAL);
+//                    dividerItemDecoration.setDrawable(ContextCompat.getDrawable(SalePointActivity.this, R.drawable.divider_drawable));
+//                    recyclerView.addItemDecoration(dividerItemDecoration);
                     recyclerView.setAdapter(adapter);
                     // Ẩn ProgressBar khi nhận được kết quả từ API
-                    circularProgressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                 } else {
 
                     // Handle error
@@ -78,7 +79,7 @@ public class SalePointActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ReceiptResponse> call, Throwable t) {
                 // Ẩn ProgressBar khi gặp lỗi
-                circularProgressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 // Handle failure
                 System.out.println(t.getMessage());
             }

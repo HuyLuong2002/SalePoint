@@ -147,16 +147,16 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:text="Thêm mới (nếu chưa có)"
-                    android:textColor="@color/black"
                     android:textSize="14sp" />
 
-                <com.google.android.material.progressindicator.CircularProgressIndicator
+                <ProgressBar
                     android:id="@+id/progressBar"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:contentDescription="Đang tải..."
                     android:indeterminate="true"
+                    android:visibility="gone"
                     app:showDelay="3000" />
             </LinearLayout>
 
@@ -293,9 +293,8 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
-                        android:hint="Nhập số km:"
                         app:boxBackgroundColor="@color/white"
                         app:boxBackgroundMode="outline"
                         app:boxStrokeColor="@color/black"
@@ -306,7 +305,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textView39"
-                            android:layout_width="200dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:inputType="numberDecimal"
@@ -331,9 +330,8 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
-                        android:hint="Nhập số lần thay nhớt"
                         app:boxBackgroundColor="@color/white"
                         app:boxBackgroundMode="outline"
                         app:boxStrokeColor="@color/black"
@@ -345,7 +343,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textView41"
-                            android:layout_width="200dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:inputType="numberDecimal"
@@ -383,7 +381,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:text="Thêm dịch vụ"
-                    android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
 

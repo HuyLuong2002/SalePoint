@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -79,7 +80,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private TextInputEditText editText2, editText3, editText4, editText5;
 
-    private CircularProgressIndicator circularProgressIndicator;
+    private ProgressBar progressBar;
     private String stripeApiKey;
     private String userID = "";
 
@@ -111,7 +112,7 @@ public class PaymentActivity extends AppCompatActivity {
         editText3 = findViewById(R.id.textView47);
         editText4 = findViewById(R.id.textView39);
         editText5 = findViewById(R.id.textView41);
-        circularProgressIndicator = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
         Intent intent = getIntent();
 
@@ -197,7 +198,7 @@ public class PaymentActivity extends AppCompatActivity {
                             receipt.setExchange_points(point);
                         }
                         receipt.setDetailReceipt(detailReceiptList);
-                        circularProgressIndicator.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.VISIBLE);
                         createReceipt(receipt, totalPrice, false);
 
                         //lấy thông tin car info mới
@@ -207,7 +208,7 @@ public class PaymentActivity extends AppCompatActivity {
                         updatedCarInfo.setCreatedAt(null);
                         updatedCarInfo.setModified(null);
                         updateCarInfo(carInfo.getId(), updatedCarInfo);
-                        circularProgressIndicator.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
             }
@@ -372,7 +373,7 @@ public class PaymentActivity extends AppCompatActivity {
 
 
     private void getPointByUserId(String userId) {
-        circularProgressIndicator.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         // Sử dụng ServiceDAOImpl để gọi API
         Call<PointResponse> call = receiptDAO.getPointByUserId(userId);
         call.enqueue(new Callback<PointResponse>() {
@@ -385,7 +386,7 @@ public class PaymentActivity extends AppCompatActivity {
                     if (!String.valueOf(point.getPoint()).isEmpty()) {
                         editText2.setText(String.valueOf(point.getPoint()));
                     }
-                    circularProgressIndicator.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     // Handle error
                     System.out.println("failed");
@@ -473,7 +474,7 @@ public class PaymentActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    circularProgressIndicator.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     // Xử lý khi có lỗi từ phía server
                     System.out.println("goi fail");
