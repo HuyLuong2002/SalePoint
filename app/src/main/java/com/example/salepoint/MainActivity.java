@@ -3,6 +3,7 @@ package com.example.salepoint;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.salepoint.dao.impl.HistoryDAOImpl;
 
 import com.example.salepoint.dao.impl.ReceiptDAOImpl;
@@ -22,10 +25,22 @@ import com.example.salepoint.ui.adapter.HistoryAdapter;
 import com.example.salepoint.util.Utils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.net.CronetProviderInstaller;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -44,6 +59,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.bumptech.glide.Glide;
 
+import org.chromium.net.CronetEngine;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,9 +68,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private String SERVER_TOKEN;
-    private ActivityMainBinding binding;
+
+    private double latitue = 10.7600;
+    private double longtitue = 106.6823;
+
     private ReceiptDAOImpl receiptDAO;
     private TextView NameUser;
     private TextView PhoneNumber;
@@ -66,13 +86,16 @@ public class MainActivity extends AppCompatActivity {
     private EditText AddressProfile;
     private Button btnUpdateInfo;
     private Button btnLogOut;
-    private CircularProgressIndicator circularProgressIndicator;
     private HistoryDAOImpl historyDAO;
     private List<History> Histories;
     RecyclerView recyclerView;
 
     public static HistoryAdapter adapter;
     private AdView adView;
+    private GoogleMap mMap;
+
+    private ActivityMainBinding binding;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         String action = intent.getStringExtra("action");
         String destinationIntent = intent.getStringExtra("destination");
 
-        if(destinationIntent != null && destinationIntent.equals("history")) {
+        if (destinationIntent != null && destinationIntent.equals("history")) {
             navController.navigate(R.id.navigation_history);
             getHistoryByUserId(userID);
         }
@@ -127,11 +150,17 @@ public class MainActivity extends AppCompatActivity {
                     String email = intent.getStringExtra("loginWithEmail");
                     getUserDataFromFirebase(userID, email);
                 }
-            } else if (destination.getId() == R.id.navigation_history){
+
+
+            } else if (destination.getId() == R.id.navigation_history) {
                 getHistoryByUserId(userID);
             }
         });
 
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = new SupportMapFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
+        mapFragment.getMapAsync(this);
     }
 
     private void loadBanner() {
@@ -331,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<HistoryResponse>() {
             @Override
             public void onResponse(Call<HistoryResponse> call, Response<HistoryResponse> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     HistoryResponse historyResponse = response.body();
                     Histories = historyResponse.getHistories();
 //                    System.out.println("List History: " + Histories);
@@ -353,5 +382,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+
+        LatLng currentLocation = new LatLng(latitue, longtitue);
+        mMap.addMarker(new MarkerOptions().position(currentLocation).title("Your Location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15)); // Đặt mức độ thu phóng ở đây (15 là mặc định)
+
     }
 }
