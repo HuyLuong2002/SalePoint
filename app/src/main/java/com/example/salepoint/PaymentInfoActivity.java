@@ -94,6 +94,7 @@ public class PaymentInfoActivity extends AppCompatActivity {
 
 
                         stripe.confirmPayment(PaymentInfoActivity.this, params);
+                        Toast.makeText(getApplicationContext(), "Thanh toán thành công", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(PaymentInfoActivity.this, AdminActivity.class);
                         startActivity(intent);
                     } else {

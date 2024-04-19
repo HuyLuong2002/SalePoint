@@ -2,6 +2,7 @@ package com.example.salepoint.dao;
 
 
 import com.example.salepoint.model.Receipt;
+import com.example.salepoint.request.ReceiptFilterRequest;
 import com.example.salepoint.response.PointListResponse;
 import com.example.salepoint.response.PointResponse;
 import com.example.salepoint.response.ReceiptCarInfoResponse;
@@ -30,4 +31,7 @@ public interface IReceiptDAO {
 
     @DELETE("receipts/{id}")
     Call<Void> removeReceipt(@Path("id") String serviceId);
+
+    @POST("receipts/filter")
+    Call<ReceiptResponse> filterReceipt(@Body ReceiptFilterRequest request);
 }

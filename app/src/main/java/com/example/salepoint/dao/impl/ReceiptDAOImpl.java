@@ -3,6 +3,7 @@ package com.example.salepoint.dao.impl;
 import com.example.salepoint.RetrofitClient;
 import com.example.salepoint.dao.IReceiptDAO;
 import com.example.salepoint.model.Receipt;
+import com.example.salepoint.request.ReceiptFilterRequest;
 import com.example.salepoint.response.PointListResponse;
 import com.example.salepoint.response.PointResponse;
 import com.example.salepoint.response.ReceiptCarInfoResponse;
@@ -42,4 +43,11 @@ public class ReceiptDAOImpl implements IReceiptDAO {
     public Call<Void> removeReceipt(String serviceId) {
         return apiService.removeReceipt(serviceId);
     }
+
+    @Override
+    public Call<ReceiptResponse> filterReceipt(ReceiptFilterRequest request) {
+        return apiService.filterReceipt(request);
+    }
+
+
 }

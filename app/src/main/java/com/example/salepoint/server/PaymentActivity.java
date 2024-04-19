@@ -316,6 +316,7 @@ public class PaymentActivity extends AppCompatActivity {
                     {
                         payment(totalPrice);
                     }
+                    Toast.makeText(getApplicationContext(), "Thanh toán thành công", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(PaymentActivity.this, AdminActivity.class);
                     startActivity(intent);
 

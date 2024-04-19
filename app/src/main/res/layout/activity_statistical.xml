@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -14,15 +14,21 @@
         <!-- CardView để hiển thị tổng doanh thu -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_margin="16dp"
-            android:padding="16dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            android:padding="16dp"
+            app:cardUseCompatPadding="true">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tổng doanh thu:"
-                android:textSize="18sp" />
+                android:layout_margin="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/totalRevenue"
@@ -30,7 +36,9 @@
                 android:layout_height="wrap_content"
                 android:text="value"
                 android:textSize="18sp"
-                android:layout_marginStart="150dp"/>
+                android:textColor="@color/green"
+                android:layout_marginStart="150dp"
+                android:layout_marginTop="10dp"/>
         </androidx.cardview.widget.CardView>
 
         <!-- Tiêu đề của bảng -->
@@ -40,6 +48,7 @@
             android:text="Tổng doanh thu theo tháng"
             android:textStyle="bold"
             android:textSize="16sp"
+            android:textColor="@color/black"
             android:padding="8dp"
             android:gravity="center"/>
 
@@ -58,6 +67,7 @@
             android:text="Top 5 Khách hàng có điểm cao nhất"
             android:textStyle="bold"
             android:textSize="16sp"
+            android:textColor="@color/black"
             android:padding="8dp"
             android:gravity="center"/>
 
@@ -77,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:text="STT"
                     android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:padding="8dp"
                     android:gravity="center" />
 
@@ -85,6 +96,7 @@
                     android:layout_height="wrap_content"
                     android:text="Tên khách hàng"
                     android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:padding="8dp"
                     android:gravity="center" />
 
@@ -93,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:text="Điểm"
                     android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:padding="8dp"
                     android:gravity="center" />
             </TableRow>
@@ -107,6 +120,7 @@
                     android:layout_height="wrap_content"
                     android:text="1"
                     android:padding="8dp"
+                    android:textColor="@color/black"
                     android:gravity="center" />
 
                 <TextView
@@ -134,6 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2"
+                    android:textColor="@color/black"
                     android:padding="8dp"
                     android:gravity="center" />
 
@@ -163,6 +178,7 @@
                     android:layout_height="wrap_content"
                     android:text="3"
                     android:padding="8dp"
+                    android:textColor="@color/black"
                     android:gravity="center" />
 
                 <TextView
@@ -191,6 +207,7 @@
                     android:layout_height="wrap_content"
                     android:text="4"
                     android:padding="8dp"
+                    android:textColor="@color/black"
                     android:gravity="center" />
 
                 <TextView
@@ -219,6 +236,7 @@
                     android:layout_height="wrap_content"
                     android:text="5"
                     android:padding="8dp"
+                    android:textColor="@color/black"
                     android:gravity="center" />
 
                 <TextView
