@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.salepoint.model.User;
 import com.example.salepoint.server.AdminActivity;
@@ -23,10 +26,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,10 +51,12 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class VerifyActivity extends AppCompatActivity {
 
     public FirebaseUser currentUser;
+    private FirebaseAuth mAuth;
     private Button btnGetOTP;
     private EditText number1;
     private EditText number2;
@@ -61,6 +68,8 @@ public class VerifyActivity extends AppCompatActivity {
     private Button btnLogin;
     private LinearLayout initialLayout;
     private LinearLayout passwordLayout;
+    private Button resend;
+    private String verificationId;
 
 
     @Override
@@ -69,8 +78,13 @@ public class VerifyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verify);
 
         Intent intent = getIntent();
-        String verificationId = intent.getStringExtra("verificationId");
+        verificationId = intent.getStringExtra("verificationId");
         String phoneNumber = intent.getStringExtra("mobile");
+
+        // Truy cập firebase
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.getFirebaseAuthSettings().forceRecaptchaFlowForTesting(true);
+
         btnGetOTP = findViewById(R.id.getCodeButton);
         btnLogin = findViewById(R.id.loginButton);
         initialLayout = findViewById(R.id.initialLayout);
@@ -82,6 +96,8 @@ public class VerifyActivity extends AppCompatActivity {
         number4 = findViewById(R.id.NumberOTP_4);
         number5 = findViewById(R.id.NumberOTP_5);
         number6 = findViewById(R.id.NumberOTP_6);
+
+        resend = findViewById(R.id.txtResendOTP);
 
         btnGetOTP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,6 +222,64 @@ public class VerifyActivity extends AppCompatActivity {
                 });
             }
         });
+
+        resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Kiểm tra kết nối Internet khi Activity được tạo
+                if (Utils.checkInternetConnection(getApplicationContext())) {
+                    sendVerificationCode(phoneNumber);
+                } else {
+                    //Xuất ra màn hình
+                }
+            }
+        });
+
+        resend.setOnHoverListener(new View.OnHoverListener() {
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_HOVER_ENTER:
+                        resend.setTextColor(ContextCompat.getColor(VerifyActivity.this, R.color.teal_200));
+                        break;
+                    case MotionEvent.ACTION_HOVER_EXIT:
+                        resend.setTextColor(ContextCompat.getColor(VerifyActivity.this, R.color.red));
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void sendVerificationCode(String phoneNumber) {
+        PhoneAuthOptions.Builder builder = PhoneAuthOptions.newBuilder(mAuth);
+        builder.setPhoneNumber("+84 " + phoneNumber);
+        builder.setTimeout(60L, TimeUnit.SECONDS);
+        builder.setActivity(this);
+        builder.setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                // Xuất ra Toast thông báo
+                Toast.makeText(VerifyActivity.this, "Xác thực thành công!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+// Xử lý khi có lỗi xảy ra trong quá trình xác thực
+                System.out.println(e.getMessage());
+                Toast.makeText(VerifyActivity.this, "Xác thực thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                // Mã đã được gửi, chuyển người dùng đến màn hình nhập mã và xác thực
+                verificationId = s;
+            }
+        });
+        PhoneAuthOptions options = builder
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+
     }
 
     private void updateImageUrlForUser(String phoneNumber, String imageUrl) {

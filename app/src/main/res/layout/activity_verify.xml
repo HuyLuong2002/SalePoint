@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter the OTP sent to"
+            android:text="Enter the OTP code sent"
             android:textSize="14sp"
             android:layout_marginTop="10dp"
             android:gravity="center"
@@ -148,17 +148,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Have you received OTP?"
+                android:text="Have you received the OTP?"
                 android:textSize="18sp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
 
-            <TextView
+            <Button
+                android:id="@+id/txtResendOTP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="Resend"
-                android:textSize="18sp"
-                android:textColor="@color/red"
-                android:layout_marginStart="3dp"/>
+                android:backgroundTint="@color/white"
+                android:textColor="@drawable/txt_view_resend"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
