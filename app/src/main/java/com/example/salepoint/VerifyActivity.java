@@ -71,7 +71,6 @@ public class VerifyActivity extends AppCompatActivity {
     private Button resend;
     private String verificationId;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +79,7 @@ public class VerifyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         verificationId = intent.getStringExtra("verificationId");
         String phoneNumber = intent.getStringExtra("mobile");
+//        mToken = intent.getStringExtra("token");
 
         // Truy cập firebase
         mAuth = FirebaseAuth.getInstance();
@@ -228,7 +228,8 @@ public class VerifyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Kiểm tra kết nối Internet khi Activity được tạo
                 if (Utils.checkInternetConnection(getApplicationContext())) {
-                    sendVerificationCode(phoneNumber);
+                    resendVerificationCode(phoneNumber, LoginActivity.mToken);
+                    System.out.println("verificationId: " + verificationId);
                 } else {
                     //Xuất ra màn hình
                 }
@@ -251,10 +252,11 @@ public class VerifyActivity extends AppCompatActivity {
         });
     }
 
-    private void sendVerificationCode(String phoneNumber) {
+    private void resendVerificationCode(String phoneNumber, PhoneAuthProvider.ForceResendingToken mToken) {
         PhoneAuthOptions.Builder builder = PhoneAuthOptions.newBuilder(mAuth);
         builder.setPhoneNumber("+84 " + phoneNumber);
         builder.setTimeout(60L, TimeUnit.SECONDS);
+        builder.setForceResendingToken(mToken);
         builder.setActivity(this);
         builder.setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override

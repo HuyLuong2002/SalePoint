@@ -44,6 +44,7 @@ public class AdminActivity extends AppCompatActivity implements LifecycleObserve
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
+                FirebaseAuth.getInstance().signOut();
                 startActivity(intent);
             }
         });

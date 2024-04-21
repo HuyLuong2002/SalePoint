@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-
+                                FirebaseAuth.getInstance().signOut();
                                 startActivity(intent);
                             }
                         });

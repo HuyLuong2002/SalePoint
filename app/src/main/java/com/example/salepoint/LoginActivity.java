@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     private CircularProgressIndicator circularProgressIndicator;
 
     public static User currentUser; //using when login password
+    public static PhoneAuthProvider.ForceResendingToken mToken;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -234,6 +235,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Mã đã được gửi, chuyển người dùng đến màn hình nhập mã và xác thực
                 Intent intent = new Intent(LoginActivity.this, VerifyActivity.class);
                 intent.putExtra("verificationId", s);
+                mToken = forceResendingToken;
                 intent.putExtra("mobile", edtPhoneNumber.getText().toString());
                 startActivity(intent);
             }
