@@ -122,7 +122,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 User user = userList.get(position);
                 // Gửi yêu cầu xóa người dùng với user.getId() hoặc các thông tin phù hợp đến realtime database của bạn.
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
-                databaseReference.child(user.getId()).child("isActive").setValue(false);
+                databaseReference.child(user.getId()).child("isActive").setValue(!user.getIsActive());
 
             }
         }

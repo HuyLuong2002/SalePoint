@@ -68,7 +68,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
 
         public TextView textView3;
         public TextView textView30;
-        public ImageView removeIcon;
 
         public ImageView viewMoreIcon;
 
@@ -87,7 +86,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
             textView1 = itemView.findViewById(R.id.textView1);
             textView3 = itemView.findViewById(R.id.textView3);
             textView30 = itemView.findViewById(R.id.textView30);
-            removeIcon = itemView.findViewById(R.id.removeIcon);
             viewMoreIcon = itemView.findViewById(R.id.viewMoreIcon);
 
             viewMoreIcon.setOnClickListener(new View.OnClickListener() {
@@ -102,12 +100,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
                 }
             });
 
-            removeIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDeleteConfirmationDialog(mReceiptList);
-                }
-            });
         }
 
         private void showDeleteConfirmationDialog(List<Receipt> receiptList) {
@@ -194,13 +186,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptV
             textView3.setText(String.valueOf(receipt.getTotalQuantity()));
             textView30.setText(receipt.isActive() ? "Active" : "Inactive");
             // Trong phương thức bind của ReceiptViewHolder
-            Drawable drawable;
-            if (receipt.isActive()) {
-                drawable = ContextCompat.getDrawable(itemView.getContext(), R.drawable.remove);
-            } else {
-                drawable = ContextCompat.getDrawable(itemView.getContext(), R.drawable.undo);
-            }
-            removeIcon.setImageDrawable(drawable);
 
 
         }
